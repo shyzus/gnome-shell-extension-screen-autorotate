@@ -59,8 +59,16 @@ function buildPrefsWidget () {
     halign: Gtk.Align.START,
     visible: true,
   });
+  // Create a label & switch for `flip-orientation`
+  const flipOrientationLabel = new Gtk.Label({
+    label: 'Flip orientation(default=Landscape):',
+    halign: Gtk.Align.START,
+    visible: true,
+  });
+
   prefsWidget.attach(flipRotationHorizontalLabel, 0, 1, 1, 1);
   prefsWidget.attach(flipRotationVerticalLabel, 0, 2, 1, 1);
+  prefsWidget.attach(flipOrientationLabel, 0, 3, 1, 1);
 
   this.flipHorizontalRotationSwitch = new Gtk.Switch({
     halign: Gtk.Align.END,
@@ -72,8 +80,15 @@ function buildPrefsWidget () {
     visible: true,
   });
 
+  this.flipOrientationSwitch = new Gtk.Switch({
+    halign: Gtk.Align.END,
+    visible: true,
+  });
+
   prefsWidget.attach(this.flipHorizontalRotationSwitch, 1, 1, 1, 1);
   prefsWidget.attach(this.flipVerticalRotationSwitch, 1, 2, 1, 1);
+  prefsWidget.attach(this.flipOrientationSwitch, 1, 3, 1, 1);
+
 
   // Bind the switch to the `flip-horizontal-rotation-direction` key
   this.settings.bind('flip-horizontal-rotation-direction', this.flipHorizontalRotationSwitch,
@@ -82,8 +97,13 @@ function buildPrefsWidget () {
 
   // Bind the switch to the `flip-horizontal-rotation-direction` key
   this.settings.bind('flip-vertical-rotation-direction', this.flipVerticalRotationSwitch,
-  'active', Gio.SettingsBindFlags.DEFAULT,
-);
+    'active', Gio.SettingsBindFlags.DEFAULT,
+  );
+
+  // Bind the switch to the `flip-orientation` key
+  this.settings.bind('flip-orientation', this.flipOrientationSwitch,
+    'active', Gio.SettingsBindFlags.DEFAULT,
+  );
 
   // Return our widget which will be added to the window
   return prefsWidget;
