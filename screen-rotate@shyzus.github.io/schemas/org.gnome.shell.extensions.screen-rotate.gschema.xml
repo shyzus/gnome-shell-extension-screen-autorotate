@@ -31,6 +31,11 @@
       <summary>summary</summary>
       <description>Invert vertical rotation direction of the screen</description>
     </key>
+    <key type="b" name="flip-orientation">
+      <default>false</default>
+      <summary>summary</summary>
+      <description>Alter orientation. (e.g: Landscape to Portrait. Default is Landscape.)</description>
+    </key>
 
   </schema>
 
