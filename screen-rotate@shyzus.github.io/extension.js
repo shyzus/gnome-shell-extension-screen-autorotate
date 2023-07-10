@@ -105,7 +105,7 @@ class SensorProxy {
 class ScreenAutorotate {
     constructor() {
         this._system_actions = new SystemActions.getDefault();
-    	this._settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.screen-rotate');
+        this._settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.screen-rotate');
         this._system_actions_backup = null;
         this._override_system_actions();
         this._orientation_settings = new Gio.Settings({ schema_id: ORIENTATION_LOCK_SCHEMA });
@@ -196,13 +196,13 @@ class ScreenAutorotate {
             Orientation values: 
             See line 38.
         */
-        const sensor_output = Orientation[orientation];
+        let offset = 1;
+        const sensor_output = (Orientation[orientation] + offset) % 4;
         let sensor = sensor_output + 1; 
         let target = sensor_output;
         let reverse_horizontal_direction = this._settings.get_boolean('flip-horizontal-rotation-direction');
         let reverse_vertical_direction = this._settings.get_boolean('flip-vertical-rotation-direction');
         let flip_orientation = this._settings.get_boolean('flip-orientation');
-        let offset = 0;
 
         // This means it is horizontal,
         if (sensor % 2 == 0) {
@@ -232,8 +232,6 @@ class ScreenAutorotate {
             offset += 1
         }
 
-        log(`target: ${target}`);
-        log(`offset: ${offset}`);
         target += offset;
         Rotator.rotate_to(target);
     }
