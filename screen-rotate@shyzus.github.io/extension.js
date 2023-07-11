@@ -196,7 +196,12 @@ class ScreenAutorotate {
             Orientation values: 
             See line 38.
         */
-        let offset = 1;
+
+        let offset = 0;
+        if (this._settings.get_boolean('portrait-display-flipped')) {
+            offset = 1;
+        }
+
         const sensor_output = (Orientation[orientation] + offset) % 4;
         let sensor = sensor_output + 1; 
         let target = sensor_output;
@@ -263,7 +268,4 @@ class Extension {
 function init(meta) {
     return new Extension(meta.uuid);
 }
-
-
-
 

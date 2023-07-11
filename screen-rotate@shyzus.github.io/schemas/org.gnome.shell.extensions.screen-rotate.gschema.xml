@@ -36,6 +36,11 @@
       <summary>summary</summary>
       <description>Alter orientation. (e.g: Landscape to Portrait. Default is Landscape.)</description>
     </key>
+    <key type="b" name="portrait-display-flipped">
+      <default>false</default>
+      <summary>summary</summary>
+      <description>Toggle this if you have a display mounted in a portrait orientation and flipped. (ex: GPD Pocket 3)</description>
+    </key>
 
   </schema>
 

@@ -66,9 +66,16 @@ function buildPrefsWidget () {
     visible: true,
   });
 
+  const portraitDisplayFlipLabel = new Gtk.Label({
+    label: 'Mirrored Portrait Display (ex: GPD Pocket 3):',
+    halign: Gtk.Align.START,
+    visible: true,
+  });
+
   prefsWidget.attach(flipRotationHorizontalLabel, 0, 1, 1, 1);
   prefsWidget.attach(flipRotationVerticalLabel, 0, 2, 1, 1);
   prefsWidget.attach(flipOrientationLabel, 0, 3, 1, 1);
+  prefsWidget.attach(portraitDisplayFlipLabel, 0, 4, 1, 1);
 
   this.flipHorizontalRotationSwitch = new Gtk.Switch({
     halign: Gtk.Align.END,
@@ -85,10 +92,15 @@ function buildPrefsWidget () {
     visible: true,
   });
 
+  this.portraitDisplayFlipSwitch = new Gtk.Switch({
+    halign: Gtk.Align.END,
+    visible: true,
+  });
+
   prefsWidget.attach(this.flipHorizontalRotationSwitch, 1, 1, 1, 1);
   prefsWidget.attach(this.flipVerticalRotationSwitch, 1, 2, 1, 1);
   prefsWidget.attach(this.flipOrientationSwitch, 1, 3, 1, 1);
-
+  prefsWidget.attach(this.portraitDisplayFlipSwitch, 1, 4, 1, 1);
 
   // Bind the switch to the `flip-horizontal-rotation-direction` key
   this.settings.bind('flip-horizontal-rotation-direction', this.flipHorizontalRotationSwitch,
@@ -102,6 +114,10 @@ function buildPrefsWidget () {
 
   // Bind the switch to the `flip-orientation` key
   this.settings.bind('flip-orientation', this.flipOrientationSwitch,
+    'active', Gio.SettingsBindFlags.DEFAULT,
+  );
+
+  this.settings.bind('portrait-display-flipped', this.portraitDisplayFlipSwitch, 
     'active', Gio.SettingsBindFlags.DEFAULT,
   );
 
