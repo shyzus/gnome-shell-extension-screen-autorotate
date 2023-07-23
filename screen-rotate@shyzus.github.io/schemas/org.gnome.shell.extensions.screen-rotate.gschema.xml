@@ -1,6 +1,6 @@
 <!-- 
 -    org.gnome.shell.extensions.screen-rotate.gschema.xml
-- Copyright (C) 2022 shyzus, Shinigaminai
+- Copyright (C) 2023 shyzus, Shinigaminai
 -
 - This program is free software: you can redistribute it and/or modify
 - it under the terms of the GNU General Public License as published by
@@ -21,14 +21,12 @@
   <schema id="org.gnome.shell.extensions.screen-rotate"
     path="/org/gnome/shell/extensions/screen-rotate/">
 
-    <key type="b" name="flip-horizontal-rotation-direction">
+    <key type="b" name="invert-horizontal-rotation-direction">
       <default>false</default>
-      <summary>summary</summary>
       <description>Invert horizontal rotation direction of the screen</description>
     </key>
-    <key type="b" name="flip-vertical-rotation-direction">
+    <key type="b" name="invert-vertical-rotation-direction">
       <default>false</default>
-      <summary>summary</summary>
       <description>Invert vertical rotation direction of the screen</description>
     </key>
     <key type="b" name="flip-orientation">

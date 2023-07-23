@@ -31,19 +31,33 @@ function fillPreferencesWindow(window) {
   const group = new Adw.PreferencesGroup();
   page.add(group);
 
-  const flipHorizontalRow = new Adw.ActionRow({ title: 'Flip horizontal rotation' })
-  group.add(flipHorizontalRow);
+  const invertHorizontalRow = new Adw.ActionRow({ title: 'Invert horizontal rotation' });
+  group.add(invertHorizontalRow);
 
-  const flipHorizontalRotationSwitch = new Gtk.Switch({
-    active: settings.get_boolean('flip-horizontal-rotation-direction'),
+  const invertVerticalRow = new Adw.ActionRow({ title: 'Invert vertical rotation' });
+  group.add(invertVerticalRow);
+
+  const invertHorizontalRotationSwitch = new Gtk.Switch({
+    active: settings.get_boolean('invert-horizontal-rotation-direction'),
     valign: Gtk.Align.CENTER,
   });
 
-  settings.bind('flip-horizontal-rotation-direction',
-    flipHorizontalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+  const invertVerticalRotationSwitch = new Gtk.Switch({
+    active: settings.get_boolean('invert-vertical-rotation-direction'),
+    valign: Gtk.Align.CENTER,
+  });
 
-  flipHorizontalRow.add_suffix(flipHorizontalRotationSwitch);
-  flipHorizontalRow.activatable_widget = flipHorizontalRotationSwitch;
+  settings.bind('invert-horizontal-rotation-direction',
+    invertHorizontalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+  settings.bind('invert-vertical-rotation-direction',
+    invertVerticalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+  invertHorizontalRow.add_suffix(invertHorizontalRotationSwitch);
+  invertHorizontalRow.activatable_widget = invertHorizontalRotationSwitch;
+
+  invertVerticalRow.add_suffix(invertVerticalRotationSwitch);
+  invertVerticalRow.activatable_widget = invertVerticalRotationSwitch;
 
   window._settings = settings;
 
