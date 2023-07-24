@@ -225,9 +225,11 @@ class ScreenAutorotate {
     }
 
     target += offset;
-    log(`sensor=${Orientation[orientation]}`);
-    log(`offset=${offset}`);
-    log(`target=${target}`);
+    if (this._settings.get_boolean('debug-logging')) {
+      log(`sensor=${Orientation[orientation]}`);
+      log(`offset=${offset}`);
+      log(`target=${target}`);
+    }
     Rotator.rotate_to(target);
   }
 }

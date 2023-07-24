@@ -31,14 +31,16 @@
     </key>
     <key type="b" name="flip-orientation">
       <default>false</default>
-      <summary>summary</summary>
       <description>Alter orientation. (e.g: Landscape to Portrait. Default is Landscape.)</description>
     </key>
     <key type="i" name="orientation-offset">
       <default>0</default>
       <description>Experiment with this offset in case orientation is incorrect.</description>
     </key>
-
+    <key type="b" name="debug-logging">
+      <default>false</default>
+      <description>Toggle debug logging.</description>
+    </key>
   </schema>
 
 </schemalist>

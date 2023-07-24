@@ -28,25 +28,29 @@ function fillPreferencesWindow(window) {
   const page = new Adw.PreferencesPage();
   window.add(page);
 
-  const group = new Adw.PreferencesGroup();
-  group.set_title('Orientation Settings')
-  page.add(group);
+  const orientationGroup = new Adw.PreferencesGroup();
+  orientationGroup.set_title('Orientation Settings')
+  page.add(orientationGroup);
+
+  const debugGroup = new Adw.PreferencesGroup();
+  debugGroup.set_title('Debug Settings');
+  page.add(debugGroup);
 
   const invertHorizontalRow = new Adw.ActionRow({
     title: 'Invert horizontal rotation'
   });
-  group.add(invertHorizontalRow);
+  orientationGroup.add(invertHorizontalRow);
 
   const invertVerticalRow = new Adw.ActionRow({
     title: 'Invert vertical rotation'
   });
-  group.add(invertVerticalRow);
+  orientationGroup.add(invertVerticalRow);
 
   const flipOrientationRow = new Adw.ActionRow({
     title: 'Flip orientation',
     subtitle: 'e.g: Landscape to Portrait. Default is Landscape'
   });
-  group.add(flipOrientationRow);
+  orientationGroup.add(flipOrientationRow);
 
   const setOffsetRow = new Adw.ActionRow({
     title: 'Set orientation offset',
@@ -55,7 +59,13 @@ function fillPreferencesWindow(window) {
  e.g PineTab2 or GPD Pocket 3'
   });
 
-  group.add(setOffsetRow);
+  orientationGroup.add(setOffsetRow);
+
+  const toggleLoggingRow = new Adw.ActionRow({
+    title: 'Enable debug logging',
+    subtitle: 'Use "journalctl /usr/bin/gnome-shell -f" to see log output.'
+  });
+  debugGroup.add(toggleLoggingRow);
 
   const invertHorizontalRotationSwitch = new Gtk.Switch({
     active: settings.get_boolean('invert-horizontal-rotation-direction'),
@@ -73,8 +83,12 @@ function fillPreferencesWindow(window) {
   });
 
   const setOffsetSpinButton = Gtk.SpinButton.new_with_range(-3, 3, 1);
-
   setOffsetSpinButton.value = settings.get_int('orientation-offset');
+
+  const toggleLoggingSwitch = new Gtk.Switch({
+    active: settings.get_boolean('debug-logging'),
+    valign: Gtk.Align.CENTER
+  });
 
   settings.bind('invert-horizontal-rotation-direction',
     invertHorizontalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
@@ -88,6 +102,9 @@ function fillPreferencesWindow(window) {
   settings.bind('orientation-offset',
     setOffsetSpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
 
+  settings.bind('debug-logging',
+    toggleLoggingSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
   invertHorizontalRow.add_suffix(invertHorizontalRotationSwitch);
   invertHorizontalRow.activatable_widget = invertHorizontalRotationSwitch;
 
@@ -99,6 +116,9 @@ function fillPreferencesWindow(window) {
 
   setOffsetRow.add_suffix(setOffsetSpinButton);
   setOffsetRow.activatable_widget = setOffsetSpinButton;
+
+  toggleLoggingRow.add_suffix(toggleLoggingSwitch);
+  toggleLoggingRow.activatable_widget = toggleLoggingSwitch;
 
   window._settings = settings;
 
