@@ -191,11 +191,10 @@ class ScreenAutorotate {
   }
 
   rotate_to(orientation) {
-    log(Orientation[orientation]);
-
     const sensor = Orientation[orientation];
     const invert_horizontal_direction = this._settings.get_boolean('invert-horizontal-rotation-direction');
     const invert_vertical_direction = this._settings.get_boolean('invert-vertical-rotation-direction');
+    const offset = this._settings.get_int('orientation-offset');
     let target = sensor; // Default to sensor output.
 
     switch (sensor) {
@@ -225,57 +224,10 @@ class ScreenAutorotate {
         break;
     }
 
-    log(target);
-    // /*
-    //     Assuming landscape orientation.
-    //     (sensor starts from 0. +1 is added for math convenience.)
-    //     Orientation values: 
-    //     See line 38.
-    // */
-
-    // let offset = 0;
-    // if (this._settings.get_boolean('portrait-display-flipped')) {
-    //   offset = 1;
-    // }
-
-    // const sensor_output = (Orientation[orientation] + offset) % 4;
-    // let sensor = sensor_output + 1;
-    // let target = sensor_output;
-    // const invert_horizontal_direction = this._settings.get_boolean('invert-horizontal-rotation-direction');
-    // const invert_vertical_direction = this._settings.get_boolean('invert-vertical-rotation-direction');
-    // let flip_orientation = this._settings.get_boolean('flip-orientation');
-
-    // // This means it is horizontal,
-    // if (sensor % 2 == 0) {
-
-    //   if (invert_horizontal_direction) {
-
-    //     if (sensor == 4) {
-    //       offset -= 2;
-    //     } else if (sensor == 2) {
-    //       offset += 2;
-    //     }
-    //   }
-
-    // } else {
-    //   // It has to be vertical.
-    //   if (invert_vertical_direction) {
-
-    //     if (sensor == 1) {
-    //       offset += 2;
-    //     } else if (sensor == 3) {
-    //       offset -= 2;
-    //     }
-    //   }
-    // }
-
-    // // Default becomes 2
-    // if (flip_orientation) {
-    //   offset += 1
-    // }
-
-    // target += offset;
-    // log(target);
+    target += offset;
+    log(`sensor=${Orientation[orientation]}`);
+    log(`offset=${offset}`);
+    log(`target=${target}`);
     Rotator.rotate_to(target);
   }
 }

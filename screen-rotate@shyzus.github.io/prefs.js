@@ -48,6 +48,15 @@ function fillPreferencesWindow(window) {
   });
   group.add(flipOrientationRow);
 
+  const setOffsetRow = new Adw.ActionRow({
+    title: 'Set orientation offset',
+    subtitle: 'Valid offset range: -3 to 3. Default is 0\nExperiment with this in case\
+ orientation is incorrect due to the display being mounted in a non-landscape orientation\
+ e.g PineTab2 or GPD Pocket 3'
+  });
+
+  group.add(setOffsetRow);
+
   const invertHorizontalRotationSwitch = new Gtk.Switch({
     active: settings.get_boolean('invert-horizontal-rotation-direction'),
     valign: Gtk.Align.CENTER,
@@ -63,6 +72,10 @@ function fillPreferencesWindow(window) {
     valign: Gtk.Align.CENTER,
   });
 
+  const setOffsetSpinButton = Gtk.SpinButton.new_with_range(-3, 3, 1);
+
+  setOffsetSpinButton.value = settings.get_int('orientation-offset');
+
   settings.bind('invert-horizontal-rotation-direction',
     invertHorizontalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
@@ -72,6 +85,9 @@ function fillPreferencesWindow(window) {
   settings.bind('flip-orientation',
     flipOrientationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
+  settings.bind('orientation-offset',
+    setOffsetSpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
+
   invertHorizontalRow.add_suffix(invertHorizontalRotationSwitch);
   invertHorizontalRow.activatable_widget = invertHorizontalRotationSwitch;
 
@@ -80,6 +96,9 @@ function fillPreferencesWindow(window) {
 
   flipOrientationRow.add_suffix(flipOrientationSwitch);
   flipOrientationRow.activatable_widget = flipOrientationSwitch;
+
+  setOffsetRow.add_suffix(setOffsetSpinButton);
+  setOffsetRow.activatable_widget = setOffsetSpinButton;
 
   window._settings = settings;
 
