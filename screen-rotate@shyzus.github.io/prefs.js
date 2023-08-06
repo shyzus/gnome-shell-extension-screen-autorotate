@@ -120,5 +120,6 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     toggleLoggingRow.add_suffix(toggleLoggingSwitch);
     toggleLoggingRow.activatable_widget = toggleLoggingSwitch;
-  }
+
+    window._settings = settings;
 }
