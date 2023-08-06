@@ -37,6 +37,11 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     debugGroup.set_title('Debug Settings');
     page.add(debugGroup);
 
+    const manualOrientationRow = new Adw.ActionRow({
+      title: 'Allow manual screen orientation using a QuickToggle'
+    });
+    orientationGroup.add(manualOrientationRow)
+
     const invertHorizontalRow = new Adw.ActionRow({
       title: 'Invert horizontal rotation'
     });
@@ -68,8 +73,13 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     });
     debugGroup.add(toggleLoggingRow);
 
+    const manualOrientationSwitch = new Gtk.Switch({
+      active: settings.get_boolean('manual-orientation'),
+      valign: Gtk.Align.CENTER,
+    });
+
     const invertHorizontalRotationSwitch = new Gtk.Switch({
-      active: window._settings.get_boolean('invert-horizontal-rotation-direction'),
+      active: settings.get_boolean('invert-horizontal-rotation-direction'),
       valign: Gtk.Align.CENTER,
     });
 
@@ -91,7 +101,10 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       valign: Gtk.Align.CENTER
     });
 
-    window._settings.bind('invert-horizontal-rotation-direction',
+    settings.bind('manual-orientation',
+      manualOrientationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    settings.bind('invert-horizontal-rotation-direction',
       invertHorizontalRotationSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
     window._settings.bind('invert-vertical-rotation-direction',
@@ -105,6 +118,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     window._settings.bind('debug-logging',
       toggleLoggingSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    manualOrientationRow.add_suffix(manualOrientationSwitch);
+    manualOrientationRow.activatable_widget = manualOrientationSwitch;
 
     invertHorizontalRow.add_suffix(invertHorizontalRotationSwitch);
     invertHorizontalRow.activatable_widget = invertHorizontalRotationSwitch;
