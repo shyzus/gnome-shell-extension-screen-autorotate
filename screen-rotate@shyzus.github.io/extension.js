@@ -65,10 +65,22 @@ const ManualOrientationMenuToggle = GObject.registerClass(
       this.menu.setHeader('selection-mode-symbolic', 'Manual Orientation');
 
       this._itemsSection = new PopupMenu.PopupMenuSection();
-      this._itemsSection.addAction('Landscape', () => log('landscape'));
-      this._itemsSection.addAction('Portrait', () => log('portrait'));
-      this._itemsSection.addAction('Landscape Inverted', () => log('landscape inverted'));
-      this._itemsSection.addAction('Portrait Inverted', () => log('portrait inverted'));
+      this._itemsSection.addAction('Landscape', () => {
+        log('landscape');
+        Rotator.rotate_to(0);
+      });
+      this._itemsSection.addAction('Portrait', () => {
+        log('portrait');
+        Rotator.rotate_to(1);
+      });
+      this._itemsSection.addAction('Landscape Inverted', () => {
+        log('landscape inverted');
+        Rotator.rotate_to(2);
+      });
+      this._itemsSection.addAction('Portrait Inverted', () => {
+        log('portrait inverted');
+        Rotator.rotate_to(3);
+      });
       this.menu.addMenuItem(this._itemsSection);
 
       // Add an entry-point for more settings
