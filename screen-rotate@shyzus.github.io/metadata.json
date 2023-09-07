@@ -3,15 +3,11 @@
   "description": "Enable screen rotation regardless of touch mode. Fork of Screen Autorotate by Kosmospredanie.",
   "url": "https://github.com/shyzus/gnome-shell-extension-screen-autorotate",
   "uuid": "screen-rotate@shyzus.github.io",
-  "version": 13,
+  "version": 99,
   "settings-schema": "org.gnome.shell.extensions.screen-rotate",
   "gettext-domain": "gnome-shell-extension-screen-rotate",
   "session-modes": ["user", "unlock-dialog"],
   "shell-version": [
-    "40",
-    "41",
-    "42",
-    "43",
-    "44"
+    "45"
   ]
 }

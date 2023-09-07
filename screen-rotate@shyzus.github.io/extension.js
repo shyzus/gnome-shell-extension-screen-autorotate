@@ -15,25 +15,16 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-'use strict';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
-const GETTEXT_DOMAIN = 'gnome-shell-extension-screen-rotate';
+import Gio from 'gi://Gio';
+
+import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
+
+import * as Rotator from './rotator.js'
+
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
-
-const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
-const _ = Gettext.gettext;
-
-const { GLib, Gio } = imports.gi;
-
-const Main = imports.ui.main;
-const SystemActions = imports.misc.systemActions;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Rotator = Me.imports.rotator;
-const Config = imports.misc.config;
-const [major] = Config.PACKAGE_VERSION.split('.');
-const shellVersion = Number.parseInt(major);
 
 // Orientation names must match those provided by net.hadess.SensorProxy
 const Orientation = Object.freeze({
@@ -42,8 +33,6 @@ const Orientation = Object.freeze({
   'bottom-up': 2,
   'right-up': 3
 });
-
-var interval = null;
 
 class SensorProxy {
   constructor(rotate_cb) {
@@ -104,9 +93,9 @@ class SensorProxy {
 }
 
 class ScreenAutorotate {
-  constructor() {
-    this._system_actions = new SystemActions.getDefault();
-    this._settings = ExtensionUtils.getSettings('org.gnome.shell.extensions.screen-rotate');
+  constructor(settings) {
+    this._system_actions = SystemActions.getDefault();
+    this._settings = settings;
     this._system_actions_backup = null;
     this._override_system_actions();
     this._orientation_settings = new Gio.Settings({ schema_id: ORIENTATION_LOCK_SCHEMA });
@@ -126,26 +115,8 @@ class ScreenAutorotate {
     };
 
     this._system_actions._updateOrientationLock = function() {
-
-      let intervalCounter = 0;
-
-      interval = setInterval(() => {
-
-        if (this._actions.has(SystemActions.LOCK_ORIENTATION_ACTION_ID)) {
-          try {
-            this._actions.get(SystemActions.LOCK_ORIENTATION_ACTION_ID).available = true;
-            this.notify('can-lock-orientation');
-            clearInterval(interval);
-          } catch (err) {
-            logError(err, "Lock Orientation action not initialized.")
-          }
-        } else if (intervalCounter > 10) {
-          clearInterval(interval);
-          logError(new Error("Maximum orientation-lock action interval reached."), "Failed to find orientation-lock action!");
-        }
-        intervalCounter++;
-      }, 1000)
-
+      this._actions.get('lock-orientation').available = true;
+      this.notify('can-lock-orientation');
     };
 
     this._system_actions._updateOrientationLock();
@@ -169,8 +140,6 @@ class ScreenAutorotate {
     this._sensor_proxy.destroy();
     this._orientation_settings = null;
     this._restore_system_actions();
-    clearInterval(interval);
-    interval = null;
   }
 
   toggle() {
@@ -226,22 +195,18 @@ class ScreenAutorotate {
 
     target += offset;
     if (this._settings.get_boolean('debug-logging')) {
-      log(`sensor=${Orientation[orientation]}`);
-      log(`offset=${offset}`);
-      log(`target=${target}`);
+      console.debug(`sensor=${Orientation[orientation]}`);
+      console.debug(`offset=${offset}`);
+      console.debug(`target=${target}`);
     }
     Rotator.rotate_to(target);
   }
 }
 
-class Extension {
-  constructor(uuid) {
-    this._uuid = uuid;
-    ExtensionUtils.initTranslations(GETTEXT_DOMAIN);
-  }
-
+export default class ScreenAutoRotateExtension extends Extension {
   enable() {
-    this._ext = new ScreenAutorotate();
+    this._settings = this.getSettings();
+    this._ext = new ScreenAutorotate(this._settings);
   }
 
   disable() {
@@ -252,12 +217,9 @@ class Extension {
         have auto-locked. This provides the ability to log back in regardless of 
         the orientation of the device in tablet mode.
     */
+    this._settings = null;
     this._ext.destroy();
     this._ext = null;
   }
-}
-
-function init(meta) {
-  return new Extension(meta.uuid);
 }
 
