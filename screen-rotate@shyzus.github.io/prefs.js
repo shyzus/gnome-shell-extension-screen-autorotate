@@ -55,7 +55,7 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     const setOffsetRow = new Adw.ActionRow({
       title: 'Set orientation offset',
-      subtitle: 'Valid offset range: -3 to 3. Default is 0\nExperiment with this in case\
+      subtitle: 'Valid offset range: 0 to 3. Default is 0\nExperiment with this in case\
  orientation is incorrect due to the display being mounted in a non-landscape orientation\
  e.g PineTab2 or GPD Pocket 3'
     });
@@ -83,7 +83,7 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       valign: Gtk.Align.CENTER,
     });
 
-    const setOffsetSpinButton = Gtk.SpinButton.new_with_range(-3, 3, 1);
+    const setOffsetSpinButton = Gtk.SpinButton.new_with_range(0, 3, 1);
     setOffsetSpinButton.value = window._settings.get_int('orientation-offset');
 
     const toggleLoggingSwitch = new Gtk.Switch({

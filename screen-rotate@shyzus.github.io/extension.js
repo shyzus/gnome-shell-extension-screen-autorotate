@@ -193,7 +193,7 @@ class ScreenAutorotate {
         break;
     }
 
-    target += offset;
+    target = (target + offset) % 4;
     if (this._settings.get_boolean('debug-logging')) {
       console.debug(`sensor=${Orientation[orientation]}`);
       console.debug(`offset=${offset}`);
