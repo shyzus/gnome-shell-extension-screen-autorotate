@@ -1,5 +1,5 @@
 /* extension.js
-* Copyright (C) 2023  kosmospredanie, shyzus, Shinigaminai
+* Copyright (C) 2024  kosmospredanie, shyzus, Shinigaminai
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -15,33 +15,20 @@
 * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import Gio from 'gi://Gio';
+import GObject from 'gi://GObject';
+import GLib from 'gi://GLib';
 
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
-
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Rotator from './rotator.js'
 
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
 
-const Gettext = imports.gettext.domain(GETTEXT_DOMAIN);
-const _ = Gettext.gettext;
-
-const { GLib, Gio, GObject } = imports.gi;
-
-const Main = imports.ui.main;
-const SystemActions = imports.misc.systemActions;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Rotator = Me.imports.rotator;
-const Config = imports.misc.config;
-const [major] = Config.PACKAGE_VERSION.split('.');
-const shellVersion = Number.parseInt(major);
-const PopupMenu = imports.ui.popupMenu;
-const QuickSettings = imports.ui.quickSettings;
-const QuickSettingsMenu = imports.ui.main.panel.statusArea.quickSettings;
+import {QuickToggle, QuickSettingsMenu} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 // Orientation names must match those provided by net.hadess.SensorProxy
 const Orientation = Object.freeze({
@@ -54,46 +41,25 @@ const Orientation = Object.freeze({
 var interval = null;
 
 const ManualOrientationMenuToggle = GObject.registerClass(
-  class ManualOrientationMenuToggle extends QuickSettings.QuickMenuToggle {
-    _init() {
-      super._init({
-        title: 'Manual Orientation',
-        iconName: 'selection-mode-symbolic',
-        toggleMode: true,
-      });
+class ManualOrientationMenuToggle extends QuickToggle {
 
-      this.menu.setHeader('selection-mode-symbolic', 'Manual Orientation');
+    constructor() {
+        super({
+            title: 'Rotate screen',
+            iconName: 'object-rotate-left-symbolic',
+            toggleMode: true,
+        });
 
-      this._itemsSection = new PopupMenu.PopupMenuSection();
-      this._itemsSection.addAction('Landscape', () => {
-        log('landscape');
-        Rotator.rotate_to(0);
-      });
-      this._itemsSection.addAction('Portrait', () => {
-        log('portrait');
-        Rotator.rotate_to(1);
-      });
-      this._itemsSection.addAction('Landscape Inverted', () => {
-        log('landscape inverted');
-        Rotator.rotate_to(2);
-      });
-      this._itemsSection.addAction('Portrait Inverted', () => {
-        log('portrait inverted');
-        Rotator.rotate_to(3);
-      });
-      this.menu.addMenuItem(this._itemsSection);
-
-      // Add an entry-point for more settings
-      this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-      const settingsItem = this.menu.addAction('More Settings',
-        () => ExtensionUtils.openPrefs());
-
-      // Ensure the settings are unavailable when the screen is locked
-      settingsItem.visible = Main.sessionMode.allowSettings;
-      this.menu._settingsActions[Extension.uuid] = settingsItem;
+        this.connect('clicked', () => {
+            const ext = Extension.lookupByUUID('screen-rotate@shyzus.github.io')._ext;
+            if (this.checked == true) {
+                ext.rotate_to('right-up');
+            } else {
+                ext.rotate_to('normal');
+            }
+        });
     }
-  }
-)
+});
 
 class SensorProxy {
   constructor(rotate_cb) {
@@ -165,8 +131,6 @@ class ScreenAutorotate {
     this._sensor_proxy = new SensorProxy(this.rotate_to.bind(this));
 
     this._state = false; // enabled or not
-    this._manual_orientation = this._settings.get_boolean('manual-orientation');
-    this._manual_orientation_toggle_menu = null;
 
     let locked = this._orientation_settings.get_boolean(ORIENTATION_LOCK_KEY);
     if (!locked) this.enable();
@@ -202,8 +166,6 @@ class ScreenAutorotate {
   destroy() {
     this._sensor_proxy.destroy();
     this._orientation_settings = null;
-    this._manual_orientation_toggle_menu.destroy();
-    this._manual_orientation_toggle_menu = null;
     this._restore_system_actions();
   }
 
@@ -217,10 +179,6 @@ class ScreenAutorotate {
   enable() {
     this._sensor_proxy.enable();
     this._state = true;
-    this._manual_orientation_toggle_menu = new ManualOrientationMenuToggle();
-    QuickSettingsMenu._addItems([this._manual_orientation_toggle_menu]);
-    QuickSettingsMenu.menu._grid.set_child_below_sibling(this._manual_orientation_toggle_menu,
-      QuickSettingsMenu._powerProfiles.quickSettingsItems[0]);
   }
 
   disable() {
@@ -276,17 +234,20 @@ export default class ScreenAutoRotateExtension extends Extension {
   enable() {
     this._settings = this.getSettings();
     this._ext = new ScreenAutorotate(this._settings);
+    this._toggle = new ManualOrientationMenuToggle();
+    Main.panel.statusArea.quickSettings.menu.addItem(this._toggle);
   }
 
   disable() {
     /*
         Comment for unlock-dialog usage:
-        The unlock-dialog sesson-mode is usefull for this extension as it allows
+        The unlock-dialog session-mode is useful for this extension as it allows
         the user to rotate their screen or lock rotation after their device may
         have auto-locked. This provides the ability to log back in regardless of 
         the orientation of the device in tablet mode.
     */
     this._settings = null;
+    this._toggle = null;
     this._ext.destroy();
     this._ext = null;
   }
