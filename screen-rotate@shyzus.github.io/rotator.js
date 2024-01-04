@@ -64,8 +64,11 @@ export function get_state() {
 
 export function rotate_to(transform) {
   this.get_state().then(state => {
-    let builtin_monitor = state.builtin_monitor;
-    let logical_monitor = state.get_logical_monitor_for(builtin_monitor.connector);
+    let target_monitor = state.builtin_monitor;
+    if (target_monitor == undefined) {
+      target_monitor = state.monitors[0]
+    }
+    let logical_monitor = state.get_logical_monitor_for(target_monitor.connector);
     logical_monitor.transform = transform;
     let variant = state.pack_to_apply(BusUtils.Methods['temporary']);
     call_dbus_method('ApplyMonitorsConfig', variant);
