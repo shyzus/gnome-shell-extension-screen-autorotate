@@ -8,7 +8,7 @@ This extension uses Mutter's D-Bus API, so it works on both X11 and Wayland.
 Original project was licensed under GPL V2. With the inactivity of the current 
 maintainer kosmospredanie. This fork has been upgraded to GPL V3.
 
-Copyright (C) 2023  kosmospredanie, shyzus, Shinigaminai, efosmark, BlackDuck888
+Copyright (C) 2024  kosmospredanie, shyzus, Shinigaminai, efosmark, BlackDuck888
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
