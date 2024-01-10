@@ -45,7 +45,7 @@ class ManualOrientationMenuToggle extends QuickToggle {
 
     constructor() {
         super({
-            title: 'Rotate screen',
+            title: _('Rotate screen'),
             iconName: 'object-rotate-left-symbolic',
             toggleMode: true,
         });
@@ -236,25 +236,48 @@ export default class ScreenAutoRotateExtension extends Extension {
     this._ext = new ScreenAutorotate(this._settings);
 
     this._settings.connect('changed::manual-flip', (settings, key) => {
+      this._set_hide_lock_rotate(settings.get_boolean(key));
+    });
+
+    this._settings.connect('changed::hide-lock-rotate', (settings, key) => {
       const enabled = settings.get_boolean(key);
-      if (enabled) {
-        this._add_manual_flip();
-      } else {
-        this._remove_manual_flip();
-      }
+      this._set_hide_lock_rotate(enabled);
     });
 
     if (this._settings.get_boolean('manual-flip')) {
-      this._add_manual_flip()
+      this._add_manual_flip();
+    }
+
+    /* Timeout needed due to unknown race condition causing 'Auto Rotate'
+    *  Quick Toggle to be undefined for a brief moment.
+    */
+    setTimeout(() => {
+      this._set_hide_lock_rotate(this._settings.get_boolean('hide-lock-rotate'));
+    }, 1000);
+  }
+
+  _set_hide_lock_rotate(state) {
+    const children = Main.panel.statusArea.quickSettings.menu._grid.get_children();
+    const rotation_lock = children.find((child) => {
+      return child.title == _('Auto Rotate') && child.icon_name == "rotation-locked-symbolic"
+    });
+
+    if (rotation_lock) {
+      if (state) {
+        rotation_lock.hide();
+      } else {
+        rotation_lock.show();
+      }
     }
   }
 
   _add_manual_flip() {
     this._toggle = new ManualOrientationMenuToggle();
     const children = Main.panel.statusArea.quickSettings.menu._grid.get_children();
-    const rotation_lock_icon = children.find((child) => child.icon_name == "rotation-locked-symbolic");
-    if (rotation_lock_icon) {
-      Main.panel.statusArea.quickSettings.menu.insertItemBefore(this._toggle, rotation_lock_icon);
+
+    const rotation_lock = children.find((child) => child.icon_name == "rotation-locked-symbolic");
+    if (rotation_lock) {
+      Main.panel.statusArea.quickSettings.menu.insertItemBefore(this._toggle, rotation_lock);
     } else {
       Main.panel.statusArea.quickSettings.menu.addItem(this._toggle);
     }

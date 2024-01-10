@@ -40,6 +40,9 @@
     <key type="b" name="manual-flip">
       <default>false</default>
       <description>Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.</description>
+    </key><key type="b" name="hide-lock-rotate">
+      <default>false</default>
+      <description>Hide the 'Auto Rotate' quick toggle.</description>
     </key>
     <key type="b" name="debug-logging">
       <default>false</default>

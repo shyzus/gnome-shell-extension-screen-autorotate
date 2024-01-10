@@ -72,6 +72,11 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     });
     shellMenuGroup.add(enableManualFlipRow);
 
+    const hideLockRotateRow = new Adw.ActionRow({
+      title: 'Hide the "Auto Rotate" quick toggle'
+    });
+    shellMenuGroup.add(hideLockRotateRow);
+
     const toggleLoggingRow = new Adw.ActionRow({
       title: 'Enable debug logging',
       subtitle: 'Use "journalctl /usr/bin/gnome-shell -f" to see log output.'
@@ -101,6 +106,11 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       valign: Gtk.Align.CENTER,
     });
 
+    const hideLockRotateSwitch = new Gtk.Switch({
+      active: window._settings.get_boolean('hide-lock-rotate'),
+      valign: Gtk.Align.CENTER,
+    });
+
     const toggleLoggingSwitch = new Gtk.Switch({
       active: window._settings.get_boolean('debug-logging'),
       valign: Gtk.Align.CENTER
@@ -121,6 +131,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     window._settings.bind('manual-flip',
       manualFlipSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
+     window._settings.bind('hide-lock-rotate',
+      hideLockRotateSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
     window._settings.bind('debug-logging',
       toggleLoggingSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
@@ -138,6 +151,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     enableManualFlipRow.add_suffix(manualFlipSwitch);
     enableManualFlipRow.activatable_widget = manualFlipSwitch;
+
+    hideLockRotateRow.add_suffix(hideLockRotateSwitch);
+    hideLockRotateRow.activatable_widget = hideLockRotateSwitch;
 
     toggleLoggingRow.add_suffix(toggleLoggingSwitch);
     toggleLoggingRow.activatable_widget = toggleLoggingSwitch;
