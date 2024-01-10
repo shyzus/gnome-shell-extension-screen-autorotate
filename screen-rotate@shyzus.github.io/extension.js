@@ -234,8 +234,37 @@ export default class ScreenAutoRotateExtension extends Extension {
   enable() {
     this._settings = this.getSettings();
     this._ext = new ScreenAutorotate(this._settings);
+
+    this._settings.connect('changed::manual-flip', (settings, key) => {
+      const enabled = settings.get_boolean(key);
+      if (enabled) {
+        this._add_manual_flip();
+      } else {
+        this._remove_manual_flip();
+      }
+    });
+
+    if (this._settings.get_boolean('manual-flip')) {
+      this._add_manual_flip()
+    }
+  }
+
+  _add_manual_flip() {
     this._toggle = new ManualOrientationMenuToggle();
-    Main.panel.statusArea.quickSettings.menu.addItem(this._toggle);
+    const children = Main.panel.statusArea.quickSettings.menu._grid.get_children();
+    const rotation_lock_icon = children.find((child) => child.icon_name == "rotation-locked-symbolic");
+    if (rotation_lock_icon) {
+      Main.panel.statusArea.quickSettings.menu.insertItemBefore(this._toggle, rotation_lock_icon);
+    } else {
+      Main.panel.statusArea.quickSettings.menu.addItem(this._toggle);
+    }
+  }
+
+  _remove_manual_flip() {
+    if (this._toggle != null) {
+      this._toggle.destroy();
+      this._toggle = null;
+    }
   }
 
   disable() {
@@ -247,8 +276,7 @@ export default class ScreenAutoRotateExtension extends Extension {
         the orientation of the device in tablet mode.
     */
     this._settings = null;
-    this._toggle.destroy();
-    this._toggle = null;
+    this._remove_manual_flip();
     this._ext.destroy();
     this._ext = null;
   }

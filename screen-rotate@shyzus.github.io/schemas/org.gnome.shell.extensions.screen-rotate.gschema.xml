@@ -37,6 +37,10 @@
       <default>0</default>
       <description>Experiment with this offset in case orientation is incorrect.</description>
     </key>
+    <key type="b" name="manual-flip">
+      <default>false</default>
+      <description>Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.</description>
+    </key>
     <key type="b" name="debug-logging">
       <default>false</default>
       <description>Toggle debug logging.</description>

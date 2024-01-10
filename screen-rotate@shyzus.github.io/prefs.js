@@ -33,6 +33,10 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     orientationGroup.set_title('Orientation Settings')
     page.add(orientationGroup);
 
+    const shellMenuGroup = new Adw.PreferencesGroup();
+    shellMenuGroup.set_title('GNOME Shell Menu Settings');
+    page.add(shellMenuGroup);
+
     const debugGroup = new Adw.PreferencesGroup();
     debugGroup.set_title('Debug Settings');
     page.add(debugGroup);
@@ -62,6 +66,12 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     orientationGroup.add(setOffsetRow);
 
+    const enableManualFlipRow = new Adw.ActionRow({
+      title: 'Enable manual flip',
+      subtitle: 'Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.'
+    });
+    shellMenuGroup.add(enableManualFlipRow);
+
     const toggleLoggingRow = new Adw.ActionRow({
       title: 'Enable debug logging',
       subtitle: 'Use "journalctl /usr/bin/gnome-shell -f" to see log output.'
@@ -86,6 +96,11 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     const setOffsetSpinButton = Gtk.SpinButton.new_with_range(0, 3, 1);
     setOffsetSpinButton.value = window._settings.get_int('orientation-offset');
 
+    const manualFlipSwitch = new Gtk.Switch({
+      active: window._settings.get_boolean('manual-flip'),
+      valign: Gtk.Align.CENTER,
+    });
+
     const toggleLoggingSwitch = new Gtk.Switch({
       active: window._settings.get_boolean('debug-logging'),
       valign: Gtk.Align.CENTER
@@ -103,6 +118,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     window._settings.bind('orientation-offset',
       setOffsetSpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
 
+    window._settings.bind('manual-flip',
+      manualFlipSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
+
     window._settings.bind('debug-logging',
       toggleLoggingSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
@@ -117,6 +135,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     setOffsetRow.add_suffix(setOffsetSpinButton);
     setOffsetRow.activatable_widget = setOffsetSpinButton;
+
+    enableManualFlipRow.add_suffix(manualFlipSwitch);
+    enableManualFlipRow.activatable_widget = manualFlipSwitch;
 
     toggleLoggingRow.add_suffix(toggleLoggingSwitch);
     toggleLoggingRow.activatable_widget = toggleLoggingSwitch;
