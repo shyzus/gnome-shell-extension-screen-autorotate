@@ -247,6 +247,7 @@ export default class ScreenAutoRotateExtension extends Extension {
         the orientation of the device in tablet mode.
     */
     this._settings = null;
+    this._toggle.destroy();
     this._toggle = null;
     this._ext.destroy();
     this._ext = null;
