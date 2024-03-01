@@ -236,16 +236,21 @@ export default class ScreenAutoRotateExtension extends Extension {
     this._ext = new ScreenAutorotate(this._settings);
 
     this._settings.connect('changed::manual-flip', (settings, key) => {
-      this._set_hide_lock_rotate(settings.get_boolean(key));
+      if (settings.get_boolean(key)) {
+        this._add_manual_flip();
+      } else {
+        this._remove_manual_flip();
+      }
     });
 
     this._settings.connect('changed::hide-lock-rotate', (settings, key) => {
-      const enabled = settings.get_boolean(key);
-      this._set_hide_lock_rotate(enabled);
+      this._set_hide_lock_rotate(settings.get_boolean(key));
     });
 
     if (this._settings.get_boolean('manual-flip')) {
       this._add_manual_flip();
+    } else {
+      this._remove_manual_flip();
     }
 
     /* Timeout needed due to unknown race condition causing 'Auto Rotate'
