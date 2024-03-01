@@ -264,7 +264,7 @@ export default class ScreenAutoRotateExtension extends Extension {
   _set_hide_lock_rotate(state) {
     const children = Main.panel.statusArea.quickSettings.menu._grid.get_children();
     const rotation_lock = children.find((child) => {
-      return child.title == _('Auto Rotate') && child.icon_name == "rotation-locked-symbolic"
+      return child.icon_name == "rotation-locked-symbolic" || child.icon_name == "rotation-allowed-symbolic"
     });
 
     if (rotation_lock) {
@@ -278,9 +278,11 @@ export default class ScreenAutoRotateExtension extends Extension {
 
   _add_manual_flip() {
     this._toggle = new ManualOrientationMenuToggle();
-    const children = Main.panel.statusArea.quickSettings.menu._grid.get_children();
+    const children = Main.panel.statusArea.quickSettings.menu.box.get_children()[0].get_children();
+    const rotation_lock = children.find((child) => {
+      return child.icon_name == "rotation-locked-symbolic" || child.icon_name == "rotation-allowed-symbolic"
+    });
 
-    const rotation_lock = children.find((child) => child.icon_name == "rotation-locked-symbolic");
     if (rotation_lock) {
       Main.panel.statusArea.quickSettings.menu.insertItemBefore(this._toggle, rotation_lock);
     } else {
