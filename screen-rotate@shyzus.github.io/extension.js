@@ -38,8 +38,6 @@ const Orientation = Object.freeze({
   'right-up': 3
 });
 
-var interval = null;
-
 const ManualOrientationMenuToggle = GObject.registerClass(
 class ManualOrientationMenuToggle extends QuickMenuToggle {
 
