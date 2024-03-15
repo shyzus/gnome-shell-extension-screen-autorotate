@@ -28,7 +28,7 @@ import * as Rotator from './rotator.js'
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
 
-import {QuickToggle, QuickSettingsMenu} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {QuickMenuToggle, QuickSettingsMenu} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 // Orientation names must match those provided by net.hadess.SensorProxy
 const Orientation = Object.freeze({
@@ -41,13 +41,13 @@ const Orientation = Object.freeze({
 var interval = null;
 
 const ManualOrientationMenuToggle = GObject.registerClass(
-class ManualOrientationMenuToggle extends QuickToggle {
+class ManualOrientationMenuToggle extends QuickMenuToggle {
 
     constructor() {
         super({
-            title: _('Rotate screen'),
+            title: _('Rotate'),
             iconName: 'object-rotate-left-symbolic',
-            toggleMode: true,
+            menuEnabled: true,
         });
 
         this.connect('clicked', () => {
