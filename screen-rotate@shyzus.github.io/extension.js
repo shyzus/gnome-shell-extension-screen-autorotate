@@ -28,7 +28,7 @@ import * as Rotator from './rotator.js'
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
 
-import {QuickMenuToggle, QuickSettingsMenu} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {QuickMenuToggle, QuickSettingsMenu, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 // Orientation names must match those provided by net.hadess.SensorProxy
 const Orientation = Object.freeze({
@@ -38,24 +38,37 @@ const Orientation = Object.freeze({
   'right-up': 3
 });
 
+const ManualOrientationIndicator = GObject.registerClass(
+class ManualOrientationIndicator extends SystemIndicator {
+    _init() {
+        super._init();
+        this.toggle = new ManualOrientationMenuToggle();
+        this.quickSettingsItems.push(this.toggle);
+    }
+
+    destroy() {
+      this.quickSettingsItems.pop(this.toggle);
+      this.toggle.destroy()flipIndicator
+    }
+});
+
 const ManualOrientationMenuToggle = GObject.registerClass(
 class ManualOrientationMenuToggle extends QuickMenuToggle {
+    _init() {
+      super._init({
+          title: _('Rotate'),
+          iconName: 'object-rotate-left-symbolic',
+          menuEnabled: true,
+      });
 
-    constructor() {
-        super({
-            title: _('Rotate'),
-            iconName: 'object-rotate-left-symbolic',
-            menuEnabled: true,
-        });
-
-        this.connect('clicked', () => {
-            const ext = Extension.lookupByUUID('screen-rotate@shyzus.github.io')._ext;
-            if (this.checked == true) {
-                ext.rotate_to('right-up');
-            } else {
-                ext.rotate_to('normal');
-            }
-        });
+      this.connect('clicked', () => {
+        const ext = Extension.lookupByUUID('screen-rotate@shyzus.github.io')._ext;
+        if (this.checked == true) {
+            ext.rotate_to('right-up');
+        } else {
+            ext.rotate_to('normal');
+        }
+      });
     }
 });
 
@@ -275,23 +288,14 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _add_manual_flip() {
-    this._toggle = new ManualOrientationMenuToggle();
-    const children = Main.panel.statusArea.quickSettings.menu.box.get_children()[0].get_children();
-    const rotation_lock = children.find((child) => {
-      return child.icon_name == "rotation-locked-symbolic" || child.icon_name == "rotation-allowed-symbolic"
-    });
-
-    if (rotation_lock) {
-      Main.panel.statusArea.quickSettings.menu.insertItemBefore(this._toggle, rotation_lock);
-    } else {
-      Main.panel.statusArea.quickSettings.menu.addItem(this._toggle);
-    }
+    this.flipIndicator = new ManualOrientationIndicator();
+    Main.panel.statusArea.quickSettings.addExternalIndicator(this.flipIndicator);
   }
 
   _remove_manual_flip() {
-    if (this._toggle != null) {
-      this._toggle.destroy();
-      this._toggle = null;
+    if (this.flipIndicator != null) {
+      this.flipIndicator.destroy();
+      this.flipIndicator = null;
     }
   }
 
