@@ -328,7 +328,7 @@ export default class ScreenAutoRotateExtension extends Extension {
     /* Timeout needed due to unknown race condition causing 'Auto Rotate'
     *  Quick Toggle to be undefined for a brief moment.
     */
-    this._timoutId = setTimeout(() => {
+    this._timeoutId = setTimeout(() => {
       this._set_hide_lock_rotate(this._settings.get_boolean('hide-lock-rotate'));
     }, 1000);
   }
