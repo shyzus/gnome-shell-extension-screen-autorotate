@@ -24,11 +24,12 @@ import GLib from 'gi://GLib';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Rotator from './rotator.js'
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
 
-import {QuickMenuToggle, QuickSettingsMenu, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import { QuickMenuToggle, QuickSettingsMenu, SystemIndicator } from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 // Orientation names must match those provided by net.hadess.SensorProxy
 const Orientation = Object.freeze({
@@ -48,7 +49,7 @@ class ManualOrientationIndicator extends SystemIndicator {
 
     destroy() {
       this.quickSettingsItems.pop(this.toggle);
-      this.toggle.destroy()flipIndicator
+      this.toggle.destroy();
     }
 });
 
@@ -56,19 +57,81 @@ const ManualOrientationMenuToggle = GObject.registerClass(
 class ManualOrientationMenuToggle extends QuickMenuToggle {
     _init() {
       super._init({
-          title: _('Rotate'),
-          iconName: 'object-rotate-left-symbolic',
-          menuEnabled: true,
+        title: _('Rotate'),
+        iconName: 'object-rotate-left-symbolic',
+        menuEnabled: true,
+        toggleMode: true,
       });
 
+      const ext = Extension.lookupByUUID('screen-rotate@shyzus.github.io')._ext;
+
+      this.menu.setHeader('object-rotate-left-symbolic', _('Screen Rotate'));
+
+      this._section = new PopupMenu.PopupMenuSection();
+      this.menu.addMenuItem(this._section);
+
+      this.landscapeItem = new PopupMenu.PopupMenuItem('Landscape', {
+        reactive: true,
+        can_focus: true,
+      });
+
+      this.portraitLeftItem = new PopupMenu.PopupMenuItem('Portrait Left', {
+        reactive: true,
+        can_focus: true,
+      });
+
+      this.landscapeFlipItem = new PopupMenu.PopupMenuItem('Landscape Flipped', {
+        reactive: true,
+        can_focus: true,
+      });
+
+      this.portraitRightItem = new PopupMenu.PopupMenuItem('Portrait Right', {
+        reactive: true,
+        can_focus: true,
+      });
+
+      this.landscapeItem.connect('activate', () => {
+        this._onItemActivate(this.landscapeItem);
+        ext.rotate_to('normal');
+      });
+      this.portraitLeftItem.connect('activate', () => {
+        this._onItemActivate(this.portraitLeftItem);
+        ext.rotate_to('left-up');
+      });
+      this.landscapeFlipItem.connect('activate', () => {
+        this._onItemActivate(this.landscapeFlipItem);
+        ext.rotate_to('bottom-up');
+      });
+      this.portraitRightItem.connect('activate', () => {
+        this._onItemActivate(this.portraitRightItem);
+        ext.rotate_to('right-up');
+      });
+
+      this._section.addMenuItem(this.landscapeItem);
+      this._section.addMenuItem(this.portraitLeftItem);
+      this._section.addMenuItem(this.landscapeFlipItem);
+      this._section.addMenuItem(this.portraitRightItem);
+
+      this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+      this.menu.addSettingsAction(_('Extension Settings'),
+            'com.mattjakeman.ExtensionManager.desktop');
+
       this.connect('clicked', () => {
-        const ext = Extension.lookupByUUID('screen-rotate@shyzus.github.io')._ext;
         if (this.checked == true) {
             ext.rotate_to('right-up');
         } else {
             ext.rotate_to('normal');
         }
       });
+    }
+
+    _onItemActivate(item) {
+      this.landscapeItem.setOrnament(PopupMenu.Ornament.HIDDEN);
+      this.portraitLeftItem.setOrnament(PopupMenu.Ornament.HIDDEN);
+      this.landscapeFlipItem.setOrnament(PopupMenu.Ornament.HIDDEN);
+      this.portraitRightItem.setOrnament(PopupMenu.Ornament.HIDDEN);
+
+      item.setOrnament(PopupMenu.Ornament.CHECK);
     }
 });
 
