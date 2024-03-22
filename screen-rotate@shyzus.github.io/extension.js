@@ -41,9 +41,9 @@ const Orientation = Object.freeze({
 
 const ManualOrientationIndicator = GObject.registerClass(
 class ManualOrientationIndicator extends SystemIndicator {
-    _init() {
+    _init(ext_ref) {
         super._init();
-        this.toggle = new ManualOrientationMenuToggle();
+        this.toggle = new ManualOrientationMenuToggle(ext_ref);
         this.quickSettingsItems.push(this.toggle);
     }
 
@@ -55,15 +55,13 @@ class ManualOrientationIndicator extends SystemIndicator {
 
 const ManualOrientationMenuToggle = GObject.registerClass(
 class ManualOrientationMenuToggle extends QuickMenuToggle {
-    _init() {
+    _init(ext) {
       super._init({
         title: _('Rotate'),
         iconName: 'object-rotate-left-symbolic',
         menuEnabled: true,
         toggleMode: true,
       });
-
-      const ext = Extension.lookupByUUID('screen-rotate@shyzus.github.io')._ext;
 
       this.menu.setHeader('object-rotate-left-symbolic', _('Screen Rotate'));
 
@@ -351,7 +349,7 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _add_manual_flip() {
-    this.flipIndicator = new ManualOrientationIndicator();
+    this.flipIndicator = new ManualOrientationIndicator(this._ext);
     Main.panel.statusArea.quickSettings.addExternalIndicator(this.flipIndicator);
   }
 
