@@ -330,7 +330,7 @@ export default class ScreenAutoRotateExtension extends Extension {
     /* Timeout needed due to unknown race condition causing 'Auto Rotate'
     *  Quick Toggle to be undefined for a brief moment.
     */
-    setTimeout(() => {
+    this._timoutId = setTimeout(() => {
       this._set_hide_lock_rotate(this._settings.get_boolean('hide-lock-rotate'));
     }, 1000);
   }
@@ -371,6 +371,8 @@ export default class ScreenAutoRotateExtension extends Extension {
         the orientation of the device in tablet mode.
     */
     this._settings = null;
+    clearTimeout(this._timeoutId);
+    this._timeoutId = null;
     this._remove_manual_flip();
     this._ext.destroy();
     this._ext = null;
