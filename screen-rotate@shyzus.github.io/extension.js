@@ -334,17 +334,17 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _set_hide_lock_rotate(state) {
-    const children = Main.panel.statusArea.quickSettings.menu._grid.get_children();
-    const rotation_lock = children.find((child) => {
-      return child.icon_name == "rotation-locked-symbolic" || child.icon_name == "rotation-allowed-symbolic"
-    });
+    const autoRotateIndicator = Main.panel.statusArea.quickSettings._autoRotate;
 
-    if (rotation_lock) {
-      if (state) {
-        rotation_lock.hide();
-      } else {
-        rotation_lock.show();
-      }
+    if (state) {
+      Main.panel.statusArea.quickSettings._indicators.remove_child(autoRotateIndicator);
+      Main.panel.statusArea.quickSettings.menu._grid.remove_child(autoRotateIndicator.quickSettingsItems[0]);
+    } else {
+      Main.panel.statusArea.quickSettings._indicators.add_child(autoRotateIndicator);
+      Main.panel.statusArea.quickSettings._addItemsBefore(
+        autoRotateIndicator.quickSettingsItems,
+        Main.panel.statusArea.quickSettings._rfkill.quickSettingsItems[0]
+      );
     }
   }
 
