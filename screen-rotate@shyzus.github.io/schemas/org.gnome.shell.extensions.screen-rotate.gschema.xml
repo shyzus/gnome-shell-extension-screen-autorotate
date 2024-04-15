@@ -40,9 +40,26 @@
     <key type="b" name="manual-flip">
       <default>false</default>
       <description>Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.</description>
-    </key><key type="b" name="hide-lock-rotate">
+    </key>
+    <key type="b" name="hide-lock-rotate">
       <default>false</default>
       <description>Hide the 'Auto Rotate' quick toggle.</description>
+    </key>
+    <key type="b" name="landscape-osk">
+      <default>false</default>
+      <description>Enable the use of the On-Screen-Keyboard for the landscape orientation.</description>
+    </key>
+    <key type="b" name="portrait-right-osk">
+      <default>false</default>
+      <description>Enable the use of the On-Screen-Keyboard for the portrait (right) orientation.</description>
+    </key>
+    <key type="b" name="portrait-left-osk">
+      <default>false</default>
+      <description>Enable the use of the On-Screen-Keyboard for the portrait (left) orientation.</description>
+    </key>
+    <key type="b" name="landscape-flipped-osk">
+      <default>false</default>
+      <description>Enable the use of the On-Screen-Keyboard for the landscape (flipped) orientation.</description>
     </key>
     <key type="b" name="debug-logging">
       <default>false</default>

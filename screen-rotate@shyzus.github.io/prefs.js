@@ -37,6 +37,10 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     shellMenuGroup.set_title('GNOME Shell Menu Settings');
     page.add(shellMenuGroup);
 
+    const oskSettingsGroup = new Adw.PreferencesGroup();
+    oskSettingsGroup.set_title('On-Screen-Keyboard Settings');
+    page.add(oskSettingsGroup);
+
     const debugGroup = new Adw.PreferencesGroup();
     debugGroup.set_title('Debug Settings');
     page.add(debugGroup);
@@ -77,6 +81,26 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     });
     shellMenuGroup.add(hideLockRotateRow);
 
+    const landscapeOskRow = new Adw.ActionRow({
+      title: 'Show OSK in landscape orientation'
+    });
+    oskSettingsGroup.add(landscapeOskRow);
+
+    const portraitRightOskRow = new Adw.ActionRow({
+      title: 'Show OSK in portrait (right) orientation'
+    });
+    oskSettingsGroup.add(portraitRightOskRow);
+
+    const portraitLeftOskRow = new Adw.ActionRow({
+      title: 'Show OSK in portrait (left) orientation'
+    });
+    oskSettingsGroup.add(portraitLeftOskRow);
+
+    const landscapeFlippedOskRow = new Adw.ActionRow({
+      title: 'Show OSK in landscape (flipped) orientation'
+    });
+    oskSettingsGroup.add(landscapeFlippedOskRow);
+
     const toggleLoggingRow = new Adw.ActionRow({
       title: 'Enable debug logging',
       subtitle: 'Use "journalctl /usr/bin/gnome-shell -f" to see log output.'
@@ -111,6 +135,26 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       valign: Gtk.Align.CENTER,
     });
 
+    const landscapeOskCheckButton = new Gtk.CheckButton({
+      active: window._settings.get_boolean('landscape-osk'),
+      valign: Gtk.Align.CENTER
+    });
+
+    const portraitRightOskCheckButton = new Gtk.CheckButton({
+      active: window._settings.get_boolean('portrait-right-osk'),
+      valign: Gtk.Align.CENTER
+    });
+
+    const portraitLeftOskCheckButton = new Gtk.CheckButton({
+      active: window._settings.get_boolean('portrait-left-osk'),
+      valign: Gtk.Align.CENTER
+    });
+
+    const landscapeFlippedOskCheckButton = new Gtk.CheckButton({
+      active: window._settings.get_boolean('landscape-flipped-osk'),
+      valign: Gtk.Align.CENTER
+    });
+
     const toggleLoggingSwitch = new Gtk.Switch({
       active: window._settings.get_boolean('debug-logging'),
       valign: Gtk.Align.CENTER
@@ -134,6 +178,18 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
      window._settings.bind('hide-lock-rotate',
       hideLockRotateSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
+    window._settings.bind('landscape-osk',
+      landscapeOskCheckButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    window._settings.bind('portrait-right-osk',
+      portraitRightOskCheckButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    window._settings.bind('portrait-left-osk',
+      portraitLeftOskCheckButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+    window._settings.bind('landscape-flipped-osk',
+      landscapeFlippedOskCheckButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
     window._settings.bind('debug-logging',
       toggleLoggingSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
@@ -154,6 +210,18 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     hideLockRotateRow.add_suffix(hideLockRotateSwitch);
     hideLockRotateRow.activatable_widget = hideLockRotateSwitch;
+
+    landscapeOskRow.add_suffix(landscapeOskCheckButton);
+    landscapeOskRow.activatable_widget = landscapeOskCheckButton;
+
+    portraitRightOskRow.add_suffix(portraitRightOskCheckButton);
+    portraitRightOskRow.activatable_widget = portraitRightOskCheckButton;
+
+    portraitLeftOskRow.add_suffix(portraitLeftOskCheckButton);
+    portraitLeftOskRow.activatable_widget = portraitLeftOskCheckButton;
+
+    landscapeFlippedOskRow.add_suffix(landscapeFlippedOskCheckButton);
+    landscapeFlippedOskRow.activatable_widget = landscapeFlippedOskCheckButton;
 
     toggleLoggingRow.add_suffix(toggleLoggingSwitch);
     toggleLoggingRow.activatable_widget = toggleLoggingSwitch;
