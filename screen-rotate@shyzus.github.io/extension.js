@@ -16,6 +16,7 @@
 */
 
 import { Extension, gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { QuickMenuToggle, QuickSettingsMenu, SystemIndicator } from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 import Gio from 'gi://Gio';
 import GObject from 'gi://GObject';
@@ -25,11 +26,12 @@ import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.j
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Rotator from './rotator.js'
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import * as KeyboardUI from 'resource:///org/gnome/shell/ui/keyboard.js';
 
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
-
-import { QuickMenuToggle, QuickSettingsMenu, SystemIndicator } from 'resource:///org/gnome/shell/ui/quickSettings.js';
+const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
+const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
 // Orientation names must match those provided by net.hadess.SensorProxy
 const Orientation = Object.freeze({
@@ -197,6 +199,7 @@ class ScreenAutorotate {
     this._settings = settings;
     this._system_actions_backup = null;
     this._override_system_actions();
+    this._a11yApplicationsSettings = new Gio.Settings({schema_id: A11Y_APPLICATIONS_SCHEMA});
     this._orientation_settings = new Gio.Settings({ schema_id: ORIENTATION_LOCK_SCHEMA });
     this._orientation_settings.connect('changed::' + ORIENTATION_LOCK_KEY, this._orientation_lock_changed.bind(this));
 
@@ -238,6 +241,7 @@ class ScreenAutorotate {
   destroy() {
     this._sensor_proxy.destroy();
     this._orientation_settings = null;
+    this._a11yApplicationsSettings = null;
     this._restore_system_actions();
   }
 
@@ -249,13 +253,37 @@ class ScreenAutorotate {
     }
   }
   enable() {
+    this._originala11yKeyboardSetting = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
     this._sensor_proxy.enable();
     this._state = true;
   }
 
   disable() {
+    this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, this._originala11yKeyboardSetting);
+    this._originala11yKeyboardSetting = null;
     this._sensor_proxy.disable();
     this._state = false;
+  }
+
+  _handle_osk(target) {
+    const landscapeOsk = this._settings.get_boolean('landscape-osk');
+    const portraitRightOsk = this._settings.get_boolean('portrait-right-osk');
+    const portraitLeftOsk = this._settings.get_boolean('portrait-left-osk');
+    const landscapeFlippedOsk = this._settings.get_boolean('landscape-flipped-osk');
+    switch (target) {
+      case 0:
+        this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, landscapeOsk);
+        break;
+      case 1:
+        this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, portraitLeftOsk);
+        break;
+      case 2:
+        this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, landscapeFlippedOsk);
+        break;
+      case 3:
+        this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, portraitRightOsk);
+        break;
+    }
   }
 
   rotate_to(orientation) {
@@ -294,11 +322,12 @@ class ScreenAutorotate {
 
     target = (target + offset) % 4;
     if (this._settings.get_boolean('debug-logging')) {
-      console.debug(`sensor=${Orientation[orientation]}`);
-      console.debug(`offset=${offset}`);
-      console.debug(`target=${target}`);
+      console.log(`sensor=${Orientation[orientation]}`);
+      console.log(`offset=${offset}`);
+      console.log(`target=${target}`);
     }
     Rotator.rotate_to(target);
+    this._handle_osk(target);
   }
 }
 
