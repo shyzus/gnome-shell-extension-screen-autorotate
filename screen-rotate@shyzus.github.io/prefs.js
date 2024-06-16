@@ -63,9 +63,10 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     const setOffsetRow = new Adw.ActionRow({
       title: 'Set orientation offset',
-      subtitle: 'Valid offset range: 0 to 3. Default is 0\nExperiment with this in case\
- orientation is incorrect due to the display being mounted in a non-landscape orientation\
- e.g PineTab2 or GPD Pocket 3'
+      subtitle: 'Valid offset range: 0 to 3. Default is 0\nExperiment with' +
+                ' this in case orientation is incorrect due to the display' +
+                ' being mounted in a non-landscape orientation' +
+                ' e.g PineTab2 or GPD Pocket 3'
     });
 
     orientationGroup.add(setOffsetRow);

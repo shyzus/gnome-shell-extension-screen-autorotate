@@ -17,11 +17,18 @@
 */
 import Gio from 'gi://Gio';
 
-import * as BusUtils from './busUtils.js';
+import { DisplayConfigState } from './displayConfigState.js'
+
 const connection = Gio.DBus.session;
 
-export function call_dbus_method(method, params = null, handler) {
-  if (handler != undefined || handler != null) {
+export const Methods = Object.freeze({
+  'verify': 0,
+  'temporary': 1,
+  'persistent': 2
+});
+
+export function call_dbus_method(method, handler, params = null) {
+  if (handler !== undefined || handler !== null) {
     connection.call(
       'org.gnome.Mutter.DisplayConfig',
       '/org/gnome/Mutter/DisplayConfig',
@@ -49,10 +56,10 @@ export function call_dbus_method(method, params = null, handler) {
 
 export function get_state() {
   return new Promise((resolve, reject) => {
-    call_dbus_method('GetCurrentState', null, (connection, res) => {
+    call_dbus_method('GetCurrentState', (conn, res) => {
       try {
-        let reply = connection.call_finish(res);
-        let configState = new BusUtils.DisplayConfigState(reply)
+        let reply = conn.call_finish(res);
+        let configState = new DisplayConfigState(reply)
         resolve(configState);
       } catch (err) {
         reject(err);
@@ -65,13 +72,13 @@ export function get_state() {
 export function rotate_to(transform) {
   this.get_state().then(state => {
     let target_monitor = state.builtin_monitor;
-    if (target_monitor == undefined) {
+    if (target_monitor === undefined) {
       target_monitor = state.monitors[0]
     }
     let logical_monitor = state.get_logical_monitor_for(target_monitor.connector);
     logical_monitor.transform = transform;
-    let variant = state.pack_to_apply(BusUtils.Methods['temporary']);
-    call_dbus_method('ApplyMonitorsConfig', variant);
+    let variant = state.pack_to_apply(this.Methods['temporary']);
+    call_dbus_method('ApplyMonitorsConfig', null, variant);
   }).catch(err => {
     console.error(err);
   })
