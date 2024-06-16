@@ -30,6 +30,8 @@ const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscre
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
+const PERIPHERAL_TOUCHPAD_SCHEMA = 'org.gnome.desktop.peripherals.touchpad';
+const TOUCHPAD_EVENTS = 'send-events';
 
 export default class ScreenAutoRotateExtension extends Extension {
   enable() {
@@ -38,7 +40,8 @@ export default class ScreenAutoRotateExtension extends Extension {
     this._system_actions_backup = null;
     this._override_system_actions();
 
-    this._a11yApplicationsSettings = new Gio.Settings({schema_id: A11Y_APPLICATIONS_SCHEMA});
+    this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
+    this._peripheralTouchpadSettings = new Gio.Settings({ schema_id: PERIPHERAL_TOUCHPAD_SCHEMA });
     this._orientation_settings = new Gio.Settings({ schema_id: ORIENTATION_LOCK_SCHEMA });
     this._orientation_settings.connect('changed::' + ORIENTATION_LOCK_KEY, this._orientation_lock_changed.bind(this));
 
@@ -165,6 +168,50 @@ export default class ScreenAutoRotateExtension extends Extension {
     }
   }
 
+  _handle_dor_touchpad(target) {
+    const dorLandscape = this._settings.get_boolean('dor-touchpad-landscape');
+    const dorPortraitRight = this._settings.get_boolean('dor-touchpad-portrait-right');
+    const dorPortraitLeft = this._settings.get_boolean('dor-touchpad-portrait-left');
+    const dorLandscapeFlipped = this._settings.get_boolean('dor-touchpad-landscape-flipped');
+
+    let setting_value = undefined;
+
+    switch (target) {
+      case 0:
+        if (dorLandscape) {
+          setting_value = "disabled";
+        } else {
+          setting_value = "enabled";
+        }
+        this._peripheralTouchpadSettings.set_string(TOUCHPAD_EVENTS, setting_value);
+        break;
+      case 1:
+        if (dorPortraitLeft) {
+          setting_value = "disabled";
+        } else {
+          setting_value = "enabled";
+        }
+        this._peripheralTouchpadSettings.set_string(TOUCHPAD_EVENTS, setting_value);
+        break;
+      case 2:
+        if (dorLandscapeFlipped) {
+          setting_value = "disabled";
+        } else {
+          setting_value = "enabled";
+        }
+        this._peripheralTouchpadSettings.set_string(TOUCHPAD_EVENTS, setting_value);
+        break;
+      case 3:
+        if (dorPortraitRight) {
+          setting_value = "disabled";
+        } else {
+          setting_value = "enabled";
+        }
+        this._peripheralTouchpadSettings.set_string(TOUCHPAD_EVENTS, setting_value);
+        break;
+    }
+  }
+  
   rotate_to(orientation) {
     const sensor = Orientation[orientation];
     const invert_horizontal_direction = this._settings.get_boolean('invert-horizontal-rotation-direction');
@@ -207,6 +254,7 @@ export default class ScreenAutoRotateExtension extends Extension {
     }
     Rotator.rotate_to(target);
     this._handle_osk(target);
+    this._handle_dor_touchpad(target);
   }
 
   disable() {
