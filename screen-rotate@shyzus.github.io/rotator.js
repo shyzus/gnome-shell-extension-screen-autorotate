@@ -77,7 +77,7 @@ export function rotate_to(transform) {
     }
     let logical_monitor = state.get_logical_monitor_for(target_monitor.connector);
     logical_monitor.transform = transform;
-    let variant = state.pack_to_apply(this.Methods['temporary']);
+    let variant = state.pack_to_apply(this.Methods['persistent']);
     call_dbus_method('ApplyMonitorsConfig', null, variant);
   }).catch(err => {
     console.error(err);
