@@ -4,6 +4,11 @@ A GNOME extension to enable screen rotation regardless of touch mode.
 
 This extension uses Mutter's D-Bus API, so it works on both X11 and Wayland.
 
+## Sponsors
+This project is supported by the following awesome sponsors!
+<!-- sponsors -->
+<!-- sponsors -->
+
 ## License
 Original project was licensed under GPL V2. With the inactivity of the current 
 maintainer kosmospredanie. This fork has been upgraded to GPL V3.
