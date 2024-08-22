@@ -98,15 +98,15 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     });
     oskSettingsGroup.add(portraitRightOskRow);
 
-    const portraitLeftOskRow = new Adw.ActionRow({
-      title: 'Show OSK in portrait (left) orientation'
-    });
-    oskSettingsGroup.add(portraitLeftOskRow);
-
     const landscapeFlippedOskRow = new Adw.ActionRow({
       title: 'Show OSK in landscape (flipped) orientation'
     });
     oskSettingsGroup.add(landscapeFlippedOskRow);
+
+    const portraitLeftOskRow = new Adw.ActionRow({
+      title: 'Show OSK in portrait (left) orientation'
+    });
+    oskSettingsGroup.add(portraitLeftOskRow);
 
     const toggleLoggingRow = new Adw.ActionRow({
       title: 'Enable debug logging',
