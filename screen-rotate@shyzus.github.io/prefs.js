@@ -21,6 +21,8 @@ import Adw from 'gi://Adw';
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
+import { Orientation } from './orientation.js';
+
 export default class MyExtensionPreferences extends ExtensionPreferences {
 
   fillPreferencesWindow(window) {
@@ -40,6 +42,10 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     const oskSettingsGroup = new Adw.PreferencesGroup();
     oskSettingsGroup.set_title('On-Screen-Keyboard Settings');
     page.add(oskSettingsGroup);
+
+    const disableOnRotateGroup = new Adw.PreferencesGroup();
+    disableOnRotateGroup.set_title('Disable-On-Rotation Settings');
+    page.add(disableOnRotateGroup);
 
     const debugGroup = new Adw.PreferencesGroup();
     debugGroup.set_title('Debug Settings');
@@ -92,15 +98,15 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     });
     oskSettingsGroup.add(portraitRightOskRow);
 
-    const portraitLeftOskRow = new Adw.ActionRow({
-      title: 'Show OSK in portrait (left) orientation'
-    });
-    oskSettingsGroup.add(portraitLeftOskRow);
-
     const landscapeFlippedOskRow = new Adw.ActionRow({
       title: 'Show OSK in landscape (flipped) orientation'
     });
     oskSettingsGroup.add(landscapeFlippedOskRow);
+
+    const portraitLeftOskRow = new Adw.ActionRow({
+      title: 'Show OSK in portrait (left) orientation'
+    });
+    oskSettingsGroup.add(portraitLeftOskRow);
 
     const toggleLoggingRow = new Adw.ActionRow({
       title: 'Enable debug logging',
@@ -156,6 +162,105 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       valign: Gtk.Align.CENTER
     });
 
+    const dorNotebook = new Gtk.Notebook();
+    
+    const dorKeyboardPage = new Gtk.ListBox();
+    dorKeyboardPage.set_visible(false); // Keep hidden until feature can be implemented.
+    dorKeyboardPage.set_selection_mode(Gtk.SelectionMode.NONE);
+
+    for (let orientation in Orientation) {
+      let actionRowTitle = undefined;
+      let checkButtonBoolId = undefined;
+      
+      switch (orientation) {
+        case 'normal':
+          actionRowTitle = "Landscape";
+          checkButtonBoolId = "dor-keyboard-landscape";
+          break;
+        case 'left-up':
+          actionRowTitle = "Portrait (Left)";
+          checkButtonBoolId = "dor-keyboard-portrait-left";
+          break;
+        case 'bottom-up':
+          actionRowTitle = "Landscape Flipped";
+          checkButtonBoolId = "dor-keyboard-landscape-flipped";
+          break;
+        case 'right-up':
+          actionRowTitle = "Portrait (Right)";
+          checkButtonBoolId = "dor-keyboard-portrait-right";
+          break;
+      }
+      
+      const dorActionRow = new Adw.ActionRow({
+        title: actionRowTitle
+      });
+
+      const dorCheckButton = new Gtk.CheckButton({
+        active: window._settings.get_boolean(checkButtonBoolId),
+        valign: Gtk.Align.CENTER
+      });
+
+      window._settings.bind(checkButtonBoolId,
+        dorCheckButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+      dorActionRow.add_suffix(dorCheckButton);
+      dorActionRow.activatable_widget = dorCheckButton;
+
+      dorKeyboardPage.append(dorActionRow);
+    }
+    
+    const dorTouchpadPage = new Gtk.ListBox();
+    dorTouchpadPage.set_selection_mode(Gtk.SelectionMode.NONE);
+    
+    for (let orientation in Orientation) {
+      let actionRowTitle = undefined;
+      let checkButtonBoolId = undefined;
+      
+      switch (orientation) {
+        case 'normal':
+          actionRowTitle = "Landscape";
+          checkButtonBoolId = "dor-touchpad-landscape";
+          break;
+        case 'left-up':
+          actionRowTitle = "Portrait (Left)";
+          checkButtonBoolId = "dor-touchpad-portrait-left";
+          break;
+        case 'bottom-up':
+          actionRowTitle = "Landscape Flipped";
+          checkButtonBoolId = "dor-touchpad-landscape-flipped";
+          break;
+        case 'right-up':
+          actionRowTitle = "Portrait (Right)";
+          checkButtonBoolId = "dor-touchpad-portrait-right";
+          break;
+      }
+      
+      const dorActionRow = new Adw.ActionRow({
+        title: actionRowTitle
+      });
+
+      const dorCheckButton = new Gtk.CheckButton({
+        active: window._settings.get_boolean(checkButtonBoolId),
+        valign: Gtk.Align.CENTER
+      });
+
+      window._settings.bind(checkButtonBoolId,
+        dorCheckButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
+      dorActionRow.add_suffix(dorCheckButton);
+      dorActionRow.activatable_widget = dorCheckButton;
+
+      dorTouchpadPage.append(dorActionRow);
+    }
+
+    const dorKeyboardLabel = Gtk.Label.new('Keyboard');
+    dorNotebook.append_page(dorKeyboardPage, dorKeyboardLabel);
+
+    const dorTouchpadLabel = Gtk.Label.new('Touchpad');
+    dorNotebook.append_page(dorTouchpadPage, dorTouchpadLabel)
+
+    disableOnRotateGroup.add(dorNotebook);
+    
     const toggleLoggingSwitch = new Gtk.Switch({
       active: window._settings.get_boolean('debug-logging'),
       valign: Gtk.Align.CENTER

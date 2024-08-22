@@ -43,6 +43,38 @@
       <default>false</default>
       <description>Enable the use of the On-Screen-Keyboard for the landscape (flipped) orientation.</description>
     </key>
+    <key type="b" name="dor-keyboard-landscape">
+      <default>false</default>
+      <description>Toggle disabling the keyboard when the orientation is landscape.</description>
+    </key>
+    <key type="b" name="dor-keyboard-portrait-left">
+      <default>false</default>
+      <description>Toggle disabling the keyboard when the orientation is portrait left.</description>
+    </key>
+    <key type="b" name="dor-keyboard-landscape-flipped">
+      <default>false</default>
+      <description>Toggle disabling the keyboard when the orientation is landscape-flipped.</description>
+    </key>
+    <key type="b" name="dor-keyboard-portrait-right">
+      <default>false</default>
+      <description>Toggle disabling the keyboard when the orientation is portrait right.</description>
+    </key>
+    <key type="b" name="dor-touchpad-landscape">
+      <default>false</default>
+      <description>Toggle disabling the touchpad when the orientation is landscape.</description>
+    </key>
+    <key type="b" name="dor-touchpad-portrait-left">
+      <default>false</default>
+      <description>Toggle disabling the touchpad when the orientation is portrait left.</description>
+    </key>
+    <key type="b" name="dor-touchpad-landscape-flipped">
+      <default>false</default>
+      <description>Toggle disabling the touchpad when the orientation is landscape-flipped.</description>
+    </key>
+    <key type="b" name="dor-touchpad-portrait-right">
+      <default>false</default>
+      <description>Toggle disabling the touchpad when the orientation is portrait right.</description>
+    </key>
     <key type="b" name="debug-logging">
       <default>false</default>
       <description>Toggle debug logging.</description>
