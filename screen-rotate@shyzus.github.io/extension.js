@@ -43,7 +43,7 @@ export default class ScreenAutoRotateExtension extends Extension {
     this._a11yApplicationsSettings = new Gio.Settings({ schema_id: A11Y_APPLICATIONS_SCHEMA });
     this._peripheralTouchpadSettings = new Gio.Settings({ schema_id: PERIPHERAL_TOUCHPAD_SCHEMA });
     this._orientation_settings = new Gio.Settings({ schema_id: ORIENTATION_LOCK_SCHEMA });
-    this._orientation_settings.connect('changed::' + ORIENTATION_LOCK_KEY, this._orientation_lock_changed.bind(this));
+    this._orientation_settings_handler = this._orientation_settings.connect('changed::' + ORIENTATION_LOCK_KEY, this._orientation_lock_changed.bind(this));
 
     this._sensor_proxy = new SensorProxy(this.rotate_to.bind(this));
 
@@ -54,7 +54,7 @@ export default class ScreenAutoRotateExtension extends Extension {
       this.toggle_rotation_lock()
     }
 
-    this._settings.connect('changed::manual-flip', (settings, key) => {
+    this._manual_flip_settings_handler = this._settings.connect('changed::manual-flip', (settings, key) => {
       if (settings.get_boolean(key)) {
         this._add_manual_flip();
       } else {
@@ -62,7 +62,7 @@ export default class ScreenAutoRotateExtension extends Extension {
       }
     });
 
-    this._settings.connect('changed::hide-lock-rotate', (settings, key) => {
+    this._hide_lock_rotate_settings_handler = this._settings.connect('changed::hide-lock-rotate', (settings, key) => {
       this._set_hide_lock_rotate(settings.get_boolean(key));
     });
 
@@ -265,11 +265,14 @@ export default class ScreenAutoRotateExtension extends Extension {
         have auto-locked. This provides the ability to log back in regardless of 
         the orientation of the device in tablet mode.
     */
+    this._settings.disconnect(this._manual_flip_settings_handler);
+    this._settings.disconnect(this._hide_lock_rotate_settings_handler);
     this._settings = null;
     clearTimeout(this._timeoutId);
     this._timeoutId = null;
     this._remove_manual_flip();
     this._sensor_proxy.destroy();
+    this._orientation_settings.disconnect(this._orientation_settings_handler);
     this._orientation_settings = null;
     this._a11yApplicationsSettings = null;
     this._restore_system_actions();
