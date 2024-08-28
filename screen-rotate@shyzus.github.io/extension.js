@@ -138,7 +138,7 @@ export default class ScreenAutoRotateExtension extends Extension {
       console.log('L138');
       console.log(e);
     }
-    if (this.flipIndicator !== null) {
+    if (this.flipIndicator !== null && this.flipIndicator != undefined) {
       this.flipIndicator.destroy();
       this.flipIndicator = null;
     }
