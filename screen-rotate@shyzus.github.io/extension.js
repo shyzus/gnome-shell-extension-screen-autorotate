@@ -109,11 +109,35 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _add_manual_flip() {
+    try {
+      console.log(`L113 flipIndicator=${this.flipIndicator}`);
+    } catch (e) {
+      console.log('L115');
+      console.log(e);
+    }
     this.flipIndicator = new ManualOrientationIndicator(this);
+    try {
+      console.log(`L120 flipIndicator=${this.flipIndicator}`);
+    } catch (e) {
+      console.log('L122');
+      console.log(e);
+    }
     Main.panel.statusArea.quickSettings.addExternalIndicator(this.flipIndicator);
+    try {
+      console.log(`L127 flipIndicator=${this.flipIndicator}`);
+    } catch (e) {
+      console.log('L129');
+      console.log(e);
+    }
   }
 
   _remove_manual_flip() {
+    try {
+      console.log(`L136 flipIndicator=${this.flipIndicator}`);
+    } catch (e) {
+      console.log('L138');
+      console.log(e);
+    }
     if (this.flipIndicator !== null) {
       this.flipIndicator.destroy();
       this.flipIndicator = null;
@@ -255,6 +279,13 @@ export default class ScreenAutoRotateExtension extends Extension {
     Rotator.rotate_to(target);
     this._handle_osk(target);
     this._handle_dor_touchpad(target);
+
+    try {
+      console.log(`L260 flipIndicator=${this.flipIndicator}`);
+    } catch (e) {
+      console.log('L262');
+      console.log(e);
+    }
   }
 
   disable() {
