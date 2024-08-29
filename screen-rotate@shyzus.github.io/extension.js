@@ -114,7 +114,7 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _remove_manual_flip() {
-    if (this.flipIndicator !== null) {
+    if (this.flipIndicator !== null && this.flipIndicator !== undefined) {
       this.flipIndicator.destroy();
       this.flipIndicator = null;
     }
@@ -143,7 +143,7 @@ export default class ScreenAutoRotateExtension extends Extension {
   _orientation_lock_changed() {
     let locked = this._orientation_settings.get_boolean(ORIENTATION_LOCK_KEY);
     if (this._state === locked) {
-      this.toggle();
+      this.toggle_rotation_lock();
     }
   }
 
