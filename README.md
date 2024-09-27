@@ -6,7 +6,7 @@ This extension uses Mutter's D-Bus API, so it works on both X11 and Wayland.
 
 ## Sponsors
 This project is supported by the following awesome sponsors!
-
+@larmoe
 <!-- sponsors --><!-- sponsors -->
 
 ## License
