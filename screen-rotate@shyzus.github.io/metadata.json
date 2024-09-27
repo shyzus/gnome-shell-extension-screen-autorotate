@@ -7,6 +7,6 @@
   "gettext-domain": "gnome-shell-extension-screen-rotate",
   "session-modes": ["user", "unlock-dialog"],
   "shell-version": [
-    "45", "46"
+    "45", "46", "47"
   ]
 }
