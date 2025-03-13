@@ -77,6 +77,9 @@ export default class ScreenAutoRotateExtension extends Extension {
     */
     this._timeoutId = setTimeout(() => {
       this._set_hide_lock_rotate(this._settings.get_boolean('hide-lock-rotate'));
+
+      // Rotate once on start up to the orientation detected by the claimed accelerometer
+      this.rotate_to(this._sensor_proxy.get_accelerometer_orientation());
     }, 1000);
   }
 
