@@ -71,6 +71,8 @@ export class SensorProxy {
       variant.unref();
       return orientation;
     }
+
+    return undefined;
   }
 
   properties_changed(proxy, changed, _invalidated) {
