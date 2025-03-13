@@ -64,6 +64,15 @@ export class SensorProxy {
     this._proxy = null;
   }
 
+  get_accelerometer_orientation() {
+    if (this._enabled) {
+      let variant = this._proxy.get_cached_property('AccelerometerOrientation');
+      let orientation = variant.unpack();
+      variant.unref();
+      return orientation;
+    }
+  }
+
   properties_changed(proxy, changed, _invalidated) {
     if (!this._enabled) return;
     let properties = changed.deep_unpack();
