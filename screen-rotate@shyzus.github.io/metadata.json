@@ -6,6 +6,9 @@
   "settings-schema": "org.gnome.shell.extensions.screen-rotate",
   "gettext-domain": "gnome-shell-extension-screen-rotate",
   "session-modes": ["user", "unlock-dialog"],
+  "donations": {
+    "github": "shyzus"
+  },
   "shell-version": [
     "45", "46", "47", "48"
   ]
