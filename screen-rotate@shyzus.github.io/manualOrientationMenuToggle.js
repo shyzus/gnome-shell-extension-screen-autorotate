@@ -54,22 +54,54 @@ class ManualOrientationMenuToggle extends QuickMenuToggle {
         reactive: true,
         can_focus: true,
       });
-
+      
+      // set default menu item state from previous session
+      this.manualFlipMenuItemSelection = ext._settings.get_string('manual-flip-menu-item-selection');
+      switch (this.manualFlipMenuItemSelection) {
+        case 'normal':
+          this.landscapeItem.setOrnament(PopupMenu.Ornament.CHECK);
+          break;
+        case 'left-up':
+          this.portraitLeftItem.setOrnament(PopupMenu.Ornament.CHECK);
+          break;
+        case 'bottom-up':
+          this.landscapeFlipItem.setOrnament(PopupMenu.Ornament.CHECK);
+          break;
+        case 'right-up':
+          this.portraitRightItem.setOrnament(PopupMenu.Ornament.CHECK);
+          break;
+      }
+      
+      // on item selection change to selected item state, rotate to selected
+      // orientation, store selection for enable/disable rotation button,
+      // set rotation button state active, and store selection for next session
       this.landscapeItem.connect('activate', () => {
         this._onItemActivate(this.landscapeItem);
         ext.rotate_to('normal');
+        this.manualFlipMenuItemSelection = 'normal';
+        this.checked = true;
+        ext._settings.set_string('manual-flip-menu-item-selection','normal');
       });
       this.portraitLeftItem.connect('activate', () => {
         this._onItemActivate(this.portraitLeftItem);
         ext.rotate_to('left-up');
+        this.manualFlipMenuItemSelection = 'left-up';
+        this.checked = true;
+        ext._settings.set_string('manual-flip-menu-item-selection','left-up');
       });
       this.landscapeFlipItem.connect('activate', () => {
         this._onItemActivate(this.landscapeFlipItem);
         ext.rotate_to('bottom-up');
+        this.manualFlipMenuItemSelection = 'bottom-up';
+        this.checked = true;
+        ext._settings.set_string('manual-flip-menu-item-selection','bottom-up');
       });
       this.portraitRightItem.connect('activate', () => {
         this._onItemActivate(this.portraitRightItem);
         ext.rotate_to('right-up');
+        this.manualFlipMenuItemSelection = 'right-up';
+        this.checked = true;
+        ext._settings.set_string('manual-flip-menu-item-selection','right-up');
       });
 
       this._section.addMenuItem(this.landscapeItem);
@@ -83,7 +115,7 @@ class ManualOrientationMenuToggle extends QuickMenuToggle {
 
       this.connect('clicked', () => {
         if (this.checked === true) {
-            ext.rotate_to('right-up');
+            ext.rotate_to(this.manualFlipMenuItemSelection);
         } else {
             ext.rotate_to('normal');
         }
