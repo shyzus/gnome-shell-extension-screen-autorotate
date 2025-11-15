@@ -40,13 +40,13 @@ export class SensorProxy {
   enable() {
     this._enabled = true;
     if (this._proxy === null) return;
-    this._proxy.call_sync('ClaimAccelerometer', null, Gio.DBusCallFlags.NONE, -1, null);
+    this._proxy.call('ClaimAccelerometer', null, Gio.DBusCallFlags.NONE, 100, null, null);
   }
 
   disable() {
     this._enabled = false;
     if (this._proxy === null) return;
-    this._proxy.call_sync('ReleaseAccelerometer', null, Gio.DBusCallFlags.NONE, -1, null);
+    this._proxy.call('ReleaseAccelerometer', null, Gio.DBusCallFlags.NONE, 100, null, null);
   }
 
   appeared(_connection, _name, _name_owner) {
@@ -56,7 +56,7 @@ export class SensorProxy {
       null);
     this._proxy.connect('g-properties-changed', this.properties_changed.bind(this));
     if (this._enabled) {
-      this._proxy.call_sync('ClaimAccelerometer', null, Gio.DBusCallFlags.NONE, -1, null);
+      this._proxy.call('ClaimAccelerometer', null, Gio.DBusCallFlags.NONE, 100, null, null);
     }
   }
 
