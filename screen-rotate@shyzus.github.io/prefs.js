@@ -77,6 +77,15 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     orientationGroup.add(setOffsetRow);
 
+    const skipInitRotationRow = new Adw.ActionRow({
+      title: 'Skip initial rotation',
+      subtitle: 'Skip initial rotation on extension startup ensures the' +
+                ' last known orientation is loaded on startup and the' +
+                ' overview screen is not skipped.'
+    });
+
+    orientationGroup.add(skipInitRotationRow);
+
     const enableManualFlipRow = new Adw.ActionRow({
       title: 'Enable manual flip',
       subtitle: 'Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.'
@@ -131,6 +140,11 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     const setOffsetSpinButton = Gtk.SpinButton.new_with_range(0, 3, 1);
     setOffsetSpinButton.value = window._settings.get_int('orientation-offset');
+
+    const skipInitRotationButton = new Gtk.Switch({
+      active: window._settings.get_boolean('skip-initial-rotation'),
+      valign: Gtk.Align.CENTER
+    });
 
     const manualFlipSwitch = new Gtk.Switch({
       active: window._settings.get_boolean('manual-flip'),
@@ -278,6 +292,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     window._settings.bind('orientation-offset',
       setOffsetSpinButton, 'value', Gio.SettingsBindFlags.DEFAULT);
 
+    window._settings.bind('skip-initial-rotation',
+      skipInitRotationButton, 'active', Gio.SettingsBindFlags.DEFAULT);
+
     window._settings.bind('manual-flip',
       manualFlipSwitch, 'active', Gio.SettingsBindFlags.DEFAULT);
 
@@ -310,6 +327,9 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
 
     setOffsetRow.add_suffix(setOffsetSpinButton);
     setOffsetRow.activatable_widget = setOffsetSpinButton;
+
+    skipInitRotationRow.add_suffix(skipInitRotationButton);
+    skipInitRotationRow.activatable_widget = skipInitRotationButton;
 
     enableManualFlipRow.add_suffix(manualFlipSwitch);
     enableManualFlipRow.activatable_widget = manualFlipSwitch;
