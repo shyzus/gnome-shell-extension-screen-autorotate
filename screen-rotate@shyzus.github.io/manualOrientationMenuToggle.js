@@ -23,34 +23,36 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 export const ManualOrientationMenuToggle = GObject.registerClass(
 class ManualOrientationMenuToggle extends QuickMenuToggle {
     constructor(ext) {
+      const _ = ext.gettext.bind(ext);
+
       super({
-        title: 'Rotate',
+        title: _('Rotate'),
         iconName: 'object-rotate-left-symbolic',
         menuEnabled: true,
         toggleMode: true,
       });
 
-      this.menu.setHeader('object-rotate-left-symbolic', 'Screen Rotate');
+      this.menu.setHeader('object-rotate-left-symbolic', _('Screen Rotate'));
 
       this._section = new PopupMenu.PopupMenuSection();
       this.menu.addMenuItem(this._section);
 
-      this.landscapeItem = new PopupMenu.PopupMenuItem('Landscape', {
+      this.landscapeItem = new PopupMenu.PopupMenuItem(_('Landscape'), {
         reactive: true,
         can_focus: true,
       });
 
-      this.portraitLeftItem = new PopupMenu.PopupMenuItem('Portrait Left', {
+      this.portraitLeftItem = new PopupMenu.PopupMenuItem(_('Portrait Left'), {
         reactive: true,
         can_focus: true,
       });
 
-      this.landscapeFlipItem = new PopupMenu.PopupMenuItem('Landscape Flipped', {
+      this.landscapeFlipItem = new PopupMenu.PopupMenuItem(_('Landscape Flipped'), {
         reactive: true,
         can_focus: true,
       });
 
-      this.portraitRightItem = new PopupMenu.PopupMenuItem('Portrait Right', {
+      this.portraitRightItem = new PopupMenu.PopupMenuItem(_('Portrait Right'), {
         reactive: true,
         can_focus: true,
       });
@@ -78,7 +80,7 @@ class ManualOrientationMenuToggle extends QuickMenuToggle {
       this._section.addMenuItem(this.portraitRightItem);
 
       this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-      this.menu.addSettingsAction('Extension Settings',
+      this.menu.addSettingsAction(_('Extension Settings'),
             'com.mattjakeman.ExtensionManager.desktop');
 
       this.connect('clicked', () => {
@@ -99,4 +101,3 @@ class ManualOrientationMenuToggle extends QuickMenuToggle {
       item.setOrnament(PopupMenu.Ornament.CHECK);
     }
 });
-
