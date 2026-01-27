@@ -1,0 +1,178 @@
+# Russian translations for Screen Rotate extension.
+# Copyright (C) 2026 Screen Rotate Contributors
+# This file is distributed under the terms of the GNU General Public License,
+# either version 3 of the License, or (at your option) any later version.
+# Dmitry Udalov <dmitry@udalov.online>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Screen Rotate\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-21 15:55+0600\n"
+"PO-Revision-Date: 2026-01-21 16:00+0600\n"
+"Last-Translator: Dmitry Udalov <dmitry@udalov.online>\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:29
+msgid "Rotate"
+msgstr "Поворот"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:35
+msgid "Screen Rotate"
+msgstr "Поворот экрана"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:40
+#: screen-rotate@shyzus.github.io/prefs.js:188
+#: screen-rotate@shyzus.github.io/prefs.js:232
+msgid "Landscape"
+msgstr "Ландшафтная"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:45
+msgid "Portrait Left"
+msgstr "Портретная влево"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:50
+#: screen-rotate@shyzus.github.io/prefs.js:196
+#: screen-rotate@shyzus.github.io/prefs.js:240
+msgid "Landscape Flipped"
+msgstr "Ландшафтная перевёрнутая"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:55
+msgid "Portrait Right"
+msgstr "Портретная вправо"
+
+#: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:83
+msgid "Extension Settings"
+msgstr "Настройки расширения"
+
+#: screen-rotate@shyzus.github.io/prefs.js:35
+msgid "Orientation Settings"
+msgstr "Ориентация"
+
+#: screen-rotate@shyzus.github.io/prefs.js:39
+msgid "GNOME Shell Menu Settings"
+msgstr "Меню GNOME Shell"
+
+#: screen-rotate@shyzus.github.io/prefs.js:43
+msgid "On-Screen-Keyboard Settings"
+msgstr "Экранная клавиатура"
+
+#: screen-rotate@shyzus.github.io/prefs.js:47
+msgid "Disable-On-Rotation Settings"
+msgstr "Отключение при повороте"
+
+#: screen-rotate@shyzus.github.io/prefs.js:51
+msgid "Debug Settings"
+msgstr "Настройки отладки"
+
+#: screen-rotate@shyzus.github.io/prefs.js:55
+msgid "Invert horizontal rotation"
+msgstr "Инвертировать горизонтальный поворот"
+
+#: screen-rotate@shyzus.github.io/prefs.js:60
+msgid "Invert vertical rotation"
+msgstr "Инвертировать вертикальный поворот"
+
+#: screen-rotate@shyzus.github.io/prefs.js:65
+msgid "Flip orientation"
+msgstr "Сменить ориентацию"
+
+#: screen-rotate@shyzus.github.io/prefs.js:66
+msgid "e.g: Landscape to Portrait. Default is Landscape"
+msgstr "Например: из ландшафтной в портретную. По умолчанию ландшафтная"
+
+#: screen-rotate@shyzus.github.io/prefs.js:71
+msgid "Set orientation offset"
+msgstr "Смещение ориентации"
+
+#: screen-rotate@shyzus.github.io/prefs.js:72
+msgid "Valid offset range: 0 to 3. Default is 0"
+msgstr "Допустимые значения: 0–3. По умолчанию 0"
+
+#: screen-rotate@shyzus.github.io/prefs.js:73
+msgid ""
+"Experiment with this in case orientation is incorrect due to the display "
+"being mounted in a non-landscape orientation"
+msgstr ""
+"Попробуйте изменить, если ориентация определяется неверно из-за "
+"нестандартного расположения дисплея"
+
+#: screen-rotate@shyzus.github.io/prefs.js:74
+msgid " e.g PineTab2 or GPD Pocket 3"
+msgstr ", например PineTab2 или GPD Pocket 3"
+
+#: screen-rotate@shyzus.github.io/prefs.js:80
+msgid "Skip initial rotation"
+msgstr "Пропустить начальный поворот"
+
+#: screen-rotate@shyzus.github.io/prefs.js:81
+msgid ""
+"Skip initial rotation on extension startup ensures the last known "
+"orientation is loaded on startup and the overview screen is not skipped."
+msgstr ""
+"При запуске расширения сохраняется последняя ориентация "
+"и не пропускается экран обзора."
+
+#: screen-rotate@shyzus.github.io/prefs.js:87
+msgid "Enable manual flip"
+msgstr "Ручной поворот"
+
+#: screen-rotate@shyzus.github.io/prefs.js:88
+msgid ""
+"Enable a toggle in the GNOME Shell System Menu to manually flip between "
+"landscape and portrait."
+msgstr ""
+"Добавить переключатель в системное меню для ручного переключения "
+"между ландшафтной и портретной ориентацией."
+
+#: screen-rotate@shyzus.github.io/prefs.js:93
+msgid "Hide the \"Auto Rotate\" quick toggle"
+msgstr "Скрыть кнопку «Автоповорот»"
+
+#: screen-rotate@shyzus.github.io/prefs.js:98
+msgid "Show OSK in landscape orientation"
+msgstr "Показывать клавиатуру в ландшафтной ориентации"
+
+#: screen-rotate@shyzus.github.io/prefs.js:103
+msgid "Show OSK in portrait (right) orientation"
+msgstr "Показывать клавиатуру в портретной (вправо) ориентации"
+
+#: screen-rotate@shyzus.github.io/prefs.js:108
+msgid "Show OSK in landscape (flipped) orientation"
+msgstr "Показывать клавиатуру в ландшафтной (перевёрнутой) ориентации"
+
+#: screen-rotate@shyzus.github.io/prefs.js:113
+msgid "Show OSK in portrait (left) orientation"
+msgstr "Показывать клавиатуру в портретной (влево) ориентации"
+
+#: screen-rotate@shyzus.github.io/prefs.js:118
+msgid "Enable debug logging"
+msgstr "Включить журнал отладки"
+
+#: screen-rotate@shyzus.github.io/prefs.js:119
+msgid "Use \"journalctl /usr/bin/gnome-shell -f\" to see log output."
+msgstr "Используйте «journalctl /usr/bin/gnome-shell -f» для просмотра журнала."
+
+#: screen-rotate@shyzus.github.io/prefs.js:192
+#: screen-rotate@shyzus.github.io/prefs.js:236
+msgid "Portrait (Left)"
+msgstr "Портретная (влево)"
+
+#: screen-rotate@shyzus.github.io/prefs.js:200
+#: screen-rotate@shyzus.github.io/prefs.js:244
+msgid "Portrait (Right)"
+msgstr "Портретная (вправо)"
+
+#: screen-rotate@shyzus.github.io/prefs.js:267
+msgid "Keyboard"
+msgstr "Клавиатура"
+
+#: screen-rotate@shyzus.github.io/prefs.js:270
+msgid "Touchpad"
+msgstr "Тачпад"

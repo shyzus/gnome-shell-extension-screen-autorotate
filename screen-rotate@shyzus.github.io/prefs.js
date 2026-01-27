@@ -19,7 +19,7 @@ import Gtk from 'gi://Gtk';
 import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
-import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
+import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 import { Orientation } from './orientation.js';
 
@@ -32,94 +32,91 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     window.add(page);
 
     const orientationGroup = new Adw.PreferencesGroup();
-    orientationGroup.set_title('Orientation Settings')
+    orientationGroup.set_title(_('Orientation Settings'));
     page.add(orientationGroup);
 
     const shellMenuGroup = new Adw.PreferencesGroup();
-    shellMenuGroup.set_title('GNOME Shell Menu Settings');
+    shellMenuGroup.set_title(_('GNOME Shell Menu Settings'));
     page.add(shellMenuGroup);
 
     const oskSettingsGroup = new Adw.PreferencesGroup();
-    oskSettingsGroup.set_title('On-Screen-Keyboard Settings');
+    oskSettingsGroup.set_title(_('On-Screen-Keyboard Settings'));
     page.add(oskSettingsGroup);
 
     const disableOnRotateGroup = new Adw.PreferencesGroup();
-    disableOnRotateGroup.set_title('Disable-On-Rotation Settings');
+    disableOnRotateGroup.set_title(_('Disable-On-Rotation Settings'));
     page.add(disableOnRotateGroup);
 
     const debugGroup = new Adw.PreferencesGroup();
-    debugGroup.set_title('Debug Settings');
+    debugGroup.set_title(_('Debug Settings'));
     page.add(debugGroup);
 
     const invertHorizontalRow = new Adw.ActionRow({
-      title: 'Invert horizontal rotation'
+      title: _('Invert horizontal rotation')
     });
     orientationGroup.add(invertHorizontalRow);
 
     const invertVerticalRow = new Adw.ActionRow({
-      title: 'Invert vertical rotation'
+      title: _('Invert vertical rotation')
     });
     orientationGroup.add(invertVerticalRow);
 
     const flipOrientationRow = new Adw.ActionRow({
-      title: 'Flip orientation',
-      subtitle: 'e.g: Landscape to Portrait. Default is Landscape'
+      title: _('Flip orientation'),
+      subtitle: _('e.g: Landscape to Portrait. Default is Landscape')
     });
     orientationGroup.add(flipOrientationRow);
 
     const setOffsetRow = new Adw.ActionRow({
-      title: 'Set orientation offset',
-      subtitle: 'Valid offset range: 0 to 3. Default is 0\nExperiment with' +
-                ' this in case orientation is incorrect due to the display' +
-                ' being mounted in a non-landscape orientation' +
-                ' e.g PineTab2 or GPD Pocket 3'
+      title: _('Set orientation offset'),
+      subtitle: _('Valid offset range: 0 to 3. Default is 0') + '\n' +
+                _('Experiment with this in case orientation is incorrect due to the display being mounted in a non-landscape orientation') +
+                _(' e.g PineTab2 or GPD Pocket 3')
     });
 
     orientationGroup.add(setOffsetRow);
 
     const skipInitRotationRow = new Adw.ActionRow({
-      title: 'Skip initial rotation',
-      subtitle: 'Skip initial rotation on extension startup ensures the' +
-                ' last known orientation is loaded on startup and the' +
-                ' overview screen is not skipped.'
+      title: _('Skip initial rotation'),
+      subtitle: _('Skip initial rotation on extension startup ensures the last known orientation is loaded on startup and the overview screen is not skipped.')
     });
 
     orientationGroup.add(skipInitRotationRow);
 
     const enableManualFlipRow = new Adw.ActionRow({
-      title: 'Enable manual flip',
-      subtitle: 'Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.'
+      title: _('Enable manual flip'),
+      subtitle: _('Enable a toggle in the GNOME Shell System Menu to manually flip between landscape and portrait.')
     });
     shellMenuGroup.add(enableManualFlipRow);
 
     const hideLockRotateRow = new Adw.ActionRow({
-      title: 'Hide the "Auto Rotate" quick toggle'
+      title: _('Hide the "Auto Rotate" quick toggle')
     });
     shellMenuGroup.add(hideLockRotateRow);
 
     const landscapeOskRow = new Adw.ActionRow({
-      title: 'Show OSK in landscape orientation'
+      title: _('Show OSK in landscape orientation')
     });
     oskSettingsGroup.add(landscapeOskRow);
 
     const portraitRightOskRow = new Adw.ActionRow({
-      title: 'Show OSK in portrait (right) orientation'
+      title: _('Show OSK in portrait (right) orientation')
     });
     oskSettingsGroup.add(portraitRightOskRow);
 
     const landscapeFlippedOskRow = new Adw.ActionRow({
-      title: 'Show OSK in landscape (flipped) orientation'
+      title: _('Show OSK in landscape (flipped) orientation')
     });
     oskSettingsGroup.add(landscapeFlippedOskRow);
 
     const portraitLeftOskRow = new Adw.ActionRow({
-      title: 'Show OSK in portrait (left) orientation'
+      title: _('Show OSK in portrait (left) orientation')
     });
     oskSettingsGroup.add(portraitLeftOskRow);
 
     const toggleLoggingRow = new Adw.ActionRow({
-      title: 'Enable debug logging',
-      subtitle: 'Use "journalctl /usr/bin/gnome-shell -f" to see log output.'
+      title: _('Enable debug logging'),
+      subtitle: _('Use "journalctl /usr/bin/gnome-shell -f" to see log output.')
     });
     debugGroup.add(toggleLoggingRow);
 
@@ -188,19 +185,19 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       
       switch (orientation) {
         case 'normal':
-          actionRowTitle = "Landscape";
+          actionRowTitle = _("Landscape");
           checkButtonBoolId = "dor-keyboard-landscape";
           break;
         case 'left-up':
-          actionRowTitle = "Portrait (Left)";
+          actionRowTitle = _("Portrait (Left)");
           checkButtonBoolId = "dor-keyboard-portrait-left";
           break;
         case 'bottom-up':
-          actionRowTitle = "Landscape Flipped";
+          actionRowTitle = _("Landscape Flipped");
           checkButtonBoolId = "dor-keyboard-landscape-flipped";
           break;
         case 'right-up':
-          actionRowTitle = "Portrait (Right)";
+          actionRowTitle = _("Portrait (Right)");
           checkButtonBoolId = "dor-keyboard-portrait-right";
           break;
       }
@@ -232,19 +229,19 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       
       switch (orientation) {
         case 'normal':
-          actionRowTitle = "Landscape";
+          actionRowTitle = _("Landscape");
           checkButtonBoolId = "dor-touchpad-landscape";
           break;
         case 'left-up':
-          actionRowTitle = "Portrait (Left)";
+          actionRowTitle = _("Portrait (Left)");
           checkButtonBoolId = "dor-touchpad-portrait-left";
           break;
         case 'bottom-up':
-          actionRowTitle = "Landscape Flipped";
+          actionRowTitle = _("Landscape Flipped");
           checkButtonBoolId = "dor-touchpad-landscape-flipped";
           break;
         case 'right-up':
-          actionRowTitle = "Portrait (Right)";
+          actionRowTitle = _("Portrait (Right)");
           checkButtonBoolId = "dor-touchpad-portrait-right";
           break;
       }
@@ -267,10 +264,10 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
       dorTouchpadPage.append(dorActionRow);
     }
 
-    const dorKeyboardLabel = Gtk.Label.new('Keyboard');
+    const dorKeyboardLabel = Gtk.Label.new(_('Keyboard'));
     dorNotebook.append_page(dorKeyboardPage, dorKeyboardLabel);
 
-    const dorTouchpadLabel = Gtk.Label.new('Touchpad');
+    const dorTouchpadLabel = Gtk.Label.new(_('Touchpad'));
     dorNotebook.append_page(dorTouchpadPage, dorTouchpadLabel)
 
     disableOnRotateGroup.add(dorNotebook);
