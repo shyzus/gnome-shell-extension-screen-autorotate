@@ -1,7 +1,8 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Screen Rotate package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Screen Rotate GNOME Shell Extension.
+# Copyright (C) 2026 Screen Rotate Contributors
+# This file is distributed under the terms of the GNU General Public License,
+# either version 3 of the License, or (at your option) any later version.
+# Dmitry Udalov <dmitry@udalov.online>, 2026.
 #
 #, fuzzy
 msgid ""
