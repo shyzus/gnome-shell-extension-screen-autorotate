@@ -114,6 +114,11 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _add_manual_flip() {
+    Main.panel.statusArea.quickSettings._indicators.get_children().forEach( indicator => {
+      if (indicator instanceof ManualOrientationIndicator) {
+        return;
+      }
+    });
     this.flipIndicator = new ManualOrientationIndicator(this);
     Main.panel.statusArea.quickSettings.addExternalIndicator(this.flipIndicator);
   }
