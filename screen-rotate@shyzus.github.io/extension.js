@@ -86,15 +86,18 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   toggle_rotation_lock() {
+    console.log("Auto rotation change requested.");
     if (this._state) {
       this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, this._originala11yKeyboardSetting);
       this._originala11yKeyboardSetting = null;
       this._sensor_proxy.disable();
       this._state = false;
+      console.log("Auto rotation is now disabled.");
     } else {
       this._originala11yKeyboardSetting = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
       this._sensor_proxy.enable();
       this._state = true;
+      console.log("Auto rotation is now enabled.");
     }
   }
 
@@ -151,6 +154,7 @@ export default class ScreenAutoRotateExtension extends Extension {
   }
 
   _orientation_lock_changed() {
+    console.log("Orientation lock change detected.");
     let locked = this._orientation_settings.get_boolean(ORIENTATION_LOCK_KEY);
     if (this._state === locked) {
       this.toggle_rotation_lock();

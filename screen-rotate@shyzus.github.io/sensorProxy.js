@@ -19,6 +19,7 @@ import Gio from 'gi://Gio';
 
 export class SensorProxy {
   constructor(rotate_cb) {
+    console.log("Constructing sensors proxy.");
     this._rotate_cb = rotate_cb;
     this._proxy = null;
     this._enabled = false;
@@ -29,58 +30,77 @@ export class SensorProxy {
       this.appeared.bind(this),
       this.vanished.bind(this)
     );
+    console.log("Sensor proxy constructed.");
   }
 
   destroy() {
+    console.log("Destroying sensor proxy.");
     Gio.bus_unwatch_name(this._watcher_id);
     if (this._enabled) this.disable();
     this._proxy = null;
+    console.log("Sensor proxy destroyed.");
   }
 
   enable() {
+    console.log("Enabling sensor proxy.");
     this._enabled = true;
     if (this._proxy === null) return;
     this._proxy.call('ClaimAccelerometer', null, Gio.DBusCallFlags.NONE, 100, null, null);
+    console.log("Sensor proxy enabled.");
   }
 
   disable() {
+    console.log("Disabling sensor proxy.");
     this._enabled = false;
     if (this._proxy === null) return;
     this._proxy.call('ReleaseAccelerometer', null, Gio.DBusCallFlags.NONE, 100, null, null);
+    console.log("Sensor proxy disabled.");
   }
 
   appeared(_connection, _name, _name_owner) {
+    console.log("Connecting to sensor proxy bus.");
     this._proxy = Gio.DBusProxy.new_for_bus_sync(
       Gio.BusType.SYSTEM, Gio.DBusProxyFlags.NONE, null,
       'net.hadess.SensorProxy', '/net/hadess/SensorProxy', 'net.hadess.SensorProxy',
       null);
     this._proxy.connect('g-properties-changed', this.properties_changed.bind(this));
+    console.log("Sensor proxy connected to bus.");
     if (this._enabled) {
+      console.log("Claiming accelerometor.");
       this._proxy.call('ClaimAccelerometer', null, Gio.DBusCallFlags.NONE, 100, null, null);
+      console.log("Accelerometer claimed.");
     }
   }
 
   vanished(_connection, _name) {
+    console.log("Cleaning up disconnected proxy.");
     this._proxy = null;
+    console.log("Disconnected proxy cleaned.");
   }
 
   get_accelerometer_orientation() {
+    console.log("Getting accelerometer orientation.");
+    let orientation = undefined; 
     if (this._enabled) {
       let variant = this._proxy.get_cached_property('AccelerometerOrientation');
-      let orientation = variant.unpack();
+      orientation = variant.unpack();
       variant.unref();
       return orientation;
     }
 
-    return undefined;
+    console.log("Fetched accelerometer orientation: %s", orientation);
+
+    return orientation;
   }
 
   properties_changed(proxy, changed, _invalidated) {
     if (!this._enabled) return;
+    console.log("Properties change detected.");
     let properties = changed.deep_unpack();
     for (let [name, value] of Object.entries(properties)) {
       if (name !== 'AccelerometerOrientation') continue;
       let target = value.unpack();
+      console.log("Accelerometer orientation has changed: %o", target);
       this._rotate_cb(target);
     }
   }

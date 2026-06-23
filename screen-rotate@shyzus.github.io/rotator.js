@@ -55,13 +55,16 @@ export function call_dbus_method(method, handler, params = null) {
 }
 
 export function get_state() {
+  console.log("Fetching display configuration.");
   return new Promise((resolve, reject) => {
     call_dbus_method('GetCurrentState', (conn, res) => {
       try {
         let reply = conn.call_finish(res);
         let configState = new DisplayConfigState(reply)
+        console.log("Fetched display configuration.");
         resolve(configState);
       } catch (err) {
+        console.error(err);
         reject(err);
       }
 
@@ -70,15 +73,18 @@ export function get_state() {
 }
 
 export function rotate_to(transform) {
+  console.log("Rotating to: %o", transform);
   this.get_state().then(state => {
+    console.log(state.monitors);
     let target_monitor = state.builtin_monitor;
-    if (target_monitor === undefined) {
+    if (target_monitor === undefined || target_monitor === null) {
       target_monitor = state.monitors[0]
     }
     let logical_monitor = state.get_logical_monitor_for(target_monitor.connector);
     logical_monitor.transform = transform;
     let variant = state.pack_to_apply(this.Methods['temporary']);
     call_dbus_method('ApplyMonitorsConfig', null, variant);
+    console.log("Applied new monitor configuration.");
   }).catch(err => {
     console.error(err);
   })
