@@ -1,0 +1,26 @@
+.rotation-suggestion-button {
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.rotation-suggestion-button.light {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1c1c1c;
+}
+
+.rotation-suggestion-button.dark {
+  background-color: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.rotation-suggestion-button.light:hover,
+.rotation-suggestion-button.light:focus {
+  background-color: rgb(255, 255, 255);
+}
+
+.rotation-suggestion-button.dark:hover,
+.rotation-suggestion-button.dark:focus {
+  background-color: rgba(50, 50, 50, 0.95);
+}

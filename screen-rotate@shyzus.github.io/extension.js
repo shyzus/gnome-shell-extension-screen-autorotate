@@ -25,6 +25,7 @@ import * as Rotator from './rotator.js'
 import { Orientation } from './orientation.js';
 import { ManualOrientationIndicator } from './manualOrientationIndicator.js';
 import { SensorProxy } from './sensorProxy.js';
+import { RotationSuggestion } from './rotationSuggestion.js';
 
 const ORIENTATION_LOCK_SCHEMA = 'org.gnome.settings-daemon.peripherals.touchscreen';
 const ORIENTATION_LOCK_KEY = 'orientation-lock';
@@ -46,6 +47,8 @@ export default class ScreenAutoRotateExtension extends Extension {
     this._orientation_settings_handler = this._orientation_settings.connect('changed::' + ORIENTATION_LOCK_KEY, this._orientation_lock_changed.bind(this));
 
     this._sensor_proxy = new SensorProxy(this.rotate_to.bind(this));
+    this._rotation_suggestion = new RotationSuggestion(this._apply_rotation.bind(this), this);
+    this._appliedTransform = null;
 
     this._state = false;
 
@@ -53,12 +56,20 @@ export default class ScreenAutoRotateExtension extends Extension {
     if (!locked) {
       this.toggle_rotation_lock()
     }
+    this._update_sensor_claim();
 
     this._manual_flip_settings_handler = this._settings.connect('changed::manual-flip', (settings, key) => {
       if (settings.get_boolean(key)) {
         this._add_manual_flip();
       } else {
         this._remove_manual_flip();
+      }
+    });
+
+    this._show_rotation_suggestion_handler = this._settings.connect('changed::rotation-suggestion-position', (settings, key) => {
+      this._update_sensor_claim();
+      if (settings.get_string(key) === 'disabled') {
+        this._rotation_suggestion.hide();
       }
     });
 
@@ -89,12 +100,25 @@ export default class ScreenAutoRotateExtension extends Extension {
     if (this._state) {
       this._a11yApplicationsSettings.set_boolean(SHOW_KEYBOARD, this._originala11yKeyboardSetting);
       this._originala11yKeyboardSetting = null;
-      this._sensor_proxy.disable();
       this._state = false;
     } else {
       this._originala11yKeyboardSetting = this._a11yApplicationsSettings.get_boolean(SHOW_KEYBOARD);
-      this._sensor_proxy.enable();
       this._state = true;
+      this._rotation_suggestion.hide();
+    }
+    this._update_sensor_claim();
+  }
+
+  // Sensor stays claimed either while auto-rotating, or while locked with
+  // rotation suggestions enabled (needed to detect orientation changes to suggest).
+  _update_sensor_claim() {
+    const locked = this._orientation_settings.get_boolean(ORIENTATION_LOCK_KEY);
+    const want_suggestions = locked && this._settings.get_string('rotation-suggestion-position') !== 'disabled';
+
+    if (this._state || want_suggestions) {
+      this._sensor_proxy.enable();
+    } else {
+      this._sensor_proxy.disable();
     }
   }
 
@@ -262,9 +286,34 @@ export default class ScreenAutoRotateExtension extends Extension {
       console.log(`offset=${offset}`);
       console.log(`target=${target}`);
     }
+
+    const locked = this._orientation_settings.get_boolean(ORIENTATION_LOCK_KEY);
+    const suggestionPosition = this._settings.get_string('rotation-suggestion-position');
+    if (locked && suggestionPosition !== 'disabled') {
+      // On the very first reading since enable(), we don't yet know what's
+      // actually applied. Treat it as the baseline instead of suggesting a
+      // "change" to the orientation the screen is already showing.
+      if (this._appliedTransform === null) {
+        this._appliedTransform = target;
+      }
+
+      if (target === this._appliedTransform) {
+        this._rotation_suggestion.hide();
+      } else {
+        this._rotation_suggestion.show(target, this._appliedTransform, suggestionPosition);
+      }
+      return;
+    }
+
+    this._apply_rotation(target);
+  }
+
+  _apply_rotation(target) {
     Rotator.rotate_to(target);
     this._handle_osk(target);
     this._handle_dor_touchpad(target);
+    this._appliedTransform = target;
+    this._rotation_suggestion.hide();
   }
 
   disable() {
@@ -277,10 +326,13 @@ export default class ScreenAutoRotateExtension extends Extension {
     */
     this._settings.disconnect(this._manual_flip_settings_handler);
     this._settings.disconnect(this._hide_lock_rotate_settings_handler);
+    this._settings.disconnect(this._show_rotation_suggestion_handler);
     this._settings = null;
     clearTimeout(this._timeoutId);
     this._timeoutId = null;
     this._remove_manual_flip();
+    this._rotation_suggestion.destroy();
+    this._rotation_suggestion = null;
     this._sensor_proxy.destroy();
     this._orientation_settings.disconnect(this._orientation_settings_handler);
     this._orientation_settings = null;

@@ -94,6 +94,21 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     });
     shellMenuGroup.add(hideLockRotateRow);
 
+    const rotationSuggestionPositions = [
+      { id: 'disabled', label: _('Disabled') },
+      { id: 'bottom-left', label: _('Bottom Left') },
+      { id: 'bottom-right', label: _('Bottom Right') },
+      { id: 'top-left', label: _('Top Left') },
+      { id: 'top-right', label: _('Top Right') },
+    ];
+
+    const showRotationSuggestionRow = new Adw.ComboRow({
+      title: _('Show a rotate button instead of auto-rotating'),
+      subtitle: _('While "Auto Rotate" is locked, show a temporary on-screen button at this corner to manually apply the detected orientation instead of rotating automatically, similar to Android.'),
+      model: Gtk.StringList.new(rotationSuggestionPositions.map(p => p.label)),
+    });
+    shellMenuGroup.add(showRotationSuggestionRow);
+
     const landscapeOskRow = new Adw.ActionRow({
       title: _('Show OSK in landscape orientation')
     });
@@ -151,6 +166,14 @@ export default class MyExtensionPreferences extends ExtensionPreferences {
     const hideLockRotateSwitch = new Gtk.Switch({
       active: window._settings.get_boolean('hide-lock-rotate'),
       valign: Gtk.Align.CENTER,
+    });
+
+    const currentRotationSuggestionPosition = window._settings.get_string('rotation-suggestion-position');
+    showRotationSuggestionRow.selected = Math.max(0, rotationSuggestionPositions.findIndex(
+      p => p.id === currentRotationSuggestionPosition));
+
+    showRotationSuggestionRow.connect('notify::selected', row => {
+      window._settings.set_string('rotation-suggestion-position', rotationSuggestionPositions[row.selected].id);
     });
 
     const landscapeOskCheckButton = new Gtk.CheckButton({
