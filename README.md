@@ -47,6 +47,6 @@ This is a fork of an [existing repository](https://github.com/kosmospredanie/gno
 ```
 git clone https://github.com/shyzus/gnome-shell-extension-screen-autorotate.git
 cd gnome-shell-extension-screen-autorotate
-glib-compile-schemas schemas/
+glib-compile-schemas screen-rotate@shyzus.github.io/schemas/
 cp -r screen-rotate@shyzus.github.io ~/.local/share/gnome-shell/extensions
 ```
