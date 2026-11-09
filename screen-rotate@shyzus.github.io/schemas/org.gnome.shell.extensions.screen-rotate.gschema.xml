@@ -27,6 +27,17 @@
       <default>false</default>
       <description>Hide the 'Auto Rotate' quick toggle.</description>
     </key>
+    <key type="s" name="rotation-suggestion-position">
+      <default>'disabled'</default>
+      <choices>
+        <choice value='disabled'/>
+        <choice value='bottom-left'/>
+        <choice value='bottom-right'/>
+        <choice value='top-left'/>
+        <choice value='top-right'/>
+      </choices>
+      <description>While 'Auto Rotate' is locked, show a temporary on-screen button at this corner to manually apply the detected orientation instead of rotating automatically.</description>
+    </key>
     <key type="b" name="landscape-osk">
       <default>false</default>
       <description>Enable the use of the On-Screen-Keyboard for the landscape orientation.</description>

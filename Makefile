@@ -17,8 +17,10 @@ PACKAGE_FILES = \
 	$(EXTENSION_DIR)/monitor.js \
 	$(EXTENSION_DIR)/orientation.js \
 	$(EXTENSION_DIR)/prefs.js \
+	$(EXTENSION_DIR)/rotationSuggestion.js \
 	$(EXTENSION_DIR)/rotator.js \
-	$(EXTENSION_DIR)/sensorProxy.js
+	$(EXTENSION_DIR)/sensorProxy.js \
+	$(EXTENSION_DIR)/stylesheet.css
 
 # Directories to scan for .js files.
 # `make potfile` uses xgettext to extract strings to build the .pot template.
