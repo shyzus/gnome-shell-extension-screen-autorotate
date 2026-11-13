@@ -285,6 +285,8 @@ export default class ScreenAutoRotateExtension extends Extension {
     this._orientation_settings.disconnect(this._orientation_settings_handler);
     this._orientation_settings = null;
     this._a11yApplicationsSettings = null;
+    this._peripheralTouchpadSettings.destroy();
+    this._peripheralTouchpadSettings = null;
     this._restore_system_actions();
   }
 }
