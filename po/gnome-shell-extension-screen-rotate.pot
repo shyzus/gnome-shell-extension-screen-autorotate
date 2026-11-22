@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Screen Rotate\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-21 15:55+0600\n"
+"POT-Creation-Date: 2026-07-18 14:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,8 +27,8 @@ msgid "Screen Rotate"
 msgstr ""
 
 #: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:40
-#: screen-rotate@shyzus.github.io/prefs.js:188
-#: screen-rotate@shyzus.github.io/prefs.js:232
+#: screen-rotate@shyzus.github.io/prefs.js:211
+#: screen-rotate@shyzus.github.io/prefs.js:255
 msgid "Landscape"
 msgstr ""
 
@@ -37,8 +37,8 @@ msgid "Portrait Left"
 msgstr ""
 
 #: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:50
-#: screen-rotate@shyzus.github.io/prefs.js:196
-#: screen-rotate@shyzus.github.io/prefs.js:240
+#: screen-rotate@shyzus.github.io/prefs.js:219
+#: screen-rotate@shyzus.github.io/prefs.js:263
 msgid "Landscape Flipped"
 msgstr ""
 
@@ -129,43 +129,78 @@ msgid "Hide the \"Auto Rotate\" quick toggle"
 msgstr ""
 
 #: screen-rotate@shyzus.github.io/prefs.js:98
-msgid "Show OSK in landscape orientation"
+msgid "Disabled"
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:103
-msgid "Show OSK in portrait (right) orientation"
+#: screen-rotate@shyzus.github.io/prefs.js:99
+msgid "Bottom Left"
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:108
-msgid "Show OSK in landscape (flipped) orientation"
+#: screen-rotate@shyzus.github.io/prefs.js:100
+msgid "Bottom Right"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:101
+msgid "Top Left"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:102
+msgid "Top Right"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:106
+msgid "Show a rotate button instead of auto-rotating"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:107
+msgid ""
+"While \"Auto Rotate\" is locked, show a temporary on-screen button at this "
+"corner to manually apply the detected orientation instead of rotating "
+"automatically, similar to Android."
 msgstr ""
 
 #: screen-rotate@shyzus.github.io/prefs.js:113
-msgid "Show OSK in portrait (left) orientation"
+msgid "Show OSK in landscape orientation"
 msgstr ""
 
 #: screen-rotate@shyzus.github.io/prefs.js:118
+msgid "Show OSK in portrait (right) orientation"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:123
+msgid "Show OSK in landscape (flipped) orientation"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:128
+msgid "Show OSK in portrait (left) orientation"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/prefs.js:133
 msgid "Enable debug logging"
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:119
+#: screen-rotate@shyzus.github.io/prefs.js:134
 msgid "Use \"journalctl /usr/bin/gnome-shell -f\" to see log output."
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:192
-#: screen-rotate@shyzus.github.io/prefs.js:236
+#: screen-rotate@shyzus.github.io/prefs.js:215
+#: screen-rotate@shyzus.github.io/prefs.js:259
 msgid "Portrait (Left)"
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:200
-#: screen-rotate@shyzus.github.io/prefs.js:244
+#: screen-rotate@shyzus.github.io/prefs.js:223
+#: screen-rotate@shyzus.github.io/prefs.js:267
 msgid "Portrait (Right)"
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:267
+#: screen-rotate@shyzus.github.io/prefs.js:290
 msgid "Keyboard"
 msgstr ""
 
-#: screen-rotate@shyzus.github.io/prefs.js:270
+#: screen-rotate@shyzus.github.io/prefs.js:293
 msgid "Touchpad"
+msgstr ""
+
+#: screen-rotate@shyzus.github.io/rotationSuggestion.js:109
+msgid "Rotate screen"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Screen Rotate\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-21 15:55+0600\n"
+"POT-Creation-Date: 2026-07-18 14:36+0200\n"
 "PO-Revision-Date: 2026-01-21 16:00+0600\n"
 "Last-Translator: Dmitry Udalov <dmitry@udalov.online>\n"
 "Language-Team: Russian\n"
@@ -28,8 +28,8 @@ msgid "Screen Rotate"
 msgstr "Поворот экрана"
 
 #: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:40
-#: screen-rotate@shyzus.github.io/prefs.js:188
-#: screen-rotate@shyzus.github.io/prefs.js:232
+#: screen-rotate@shyzus.github.io/prefs.js:211
+#: screen-rotate@shyzus.github.io/prefs.js:255
 msgid "Landscape"
 msgstr "Ландшафтная"
 
@@ -38,8 +38,8 @@ msgid "Portrait Left"
 msgstr "Портретная влево"
 
 #: screen-rotate@shyzus.github.io/manualOrientationMenuToggle.js:50
-#: screen-rotate@shyzus.github.io/prefs.js:196
-#: screen-rotate@shyzus.github.io/prefs.js:240
+#: screen-rotate@shyzus.github.io/prefs.js:219
+#: screen-rotate@shyzus.github.io/prefs.js:263
 msgid "Landscape Flipped"
 msgstr "Ландшафтная перевёрнутая"
 
@@ -136,43 +136,81 @@ msgid "Hide the \"Auto Rotate\" quick toggle"
 msgstr "Скрыть кнопку «Автоповорот»"
 
 #: screen-rotate@shyzus.github.io/prefs.js:98
+msgid "Disabled"
+msgstr "Отключено"
+
+#: screen-rotate@shyzus.github.io/prefs.js:99
+msgid "Bottom Left"
+msgstr "Внизу слева"
+
+#: screen-rotate@shyzus.github.io/prefs.js:100
+msgid "Bottom Right"
+msgstr "Внизу справа"
+
+#: screen-rotate@shyzus.github.io/prefs.js:101
+msgid "Top Left"
+msgstr "Вверху слева"
+
+#: screen-rotate@shyzus.github.io/prefs.js:102
+msgid "Top Right"
+msgstr "Вверху справа"
+
+#: screen-rotate@shyzus.github.io/prefs.js:106
+msgid "Show a rotate button instead of auto-rotating"
+msgstr "Показывать кнопку поворота вместо автоматического поворота"
+
+#: screen-rotate@shyzus.github.io/prefs.js:107
+msgid ""
+"While \"Auto Rotate\" is locked, show a temporary on-screen button at this "
+"corner to manually apply the detected orientation instead of rotating "
+"automatically, similar to Android."
+msgstr ""
+"Пока «Автоповорот» заблокирован, показывать временную кнопку в этом углу "
+"экрана для ручного применения обнаруженной ориентации вместо "
+"автоматического поворота — как в Android."
+
+#: screen-rotate@shyzus.github.io/prefs.js:113
 msgid "Show OSK in landscape orientation"
 msgstr "Показывать клавиатуру в ландшафтной ориентации"
 
-#: screen-rotate@shyzus.github.io/prefs.js:103
+#: screen-rotate@shyzus.github.io/prefs.js:118
 msgid "Show OSK in portrait (right) orientation"
 msgstr "Показывать клавиатуру в портретной (вправо) ориентации"
 
-#: screen-rotate@shyzus.github.io/prefs.js:108
+#: screen-rotate@shyzus.github.io/prefs.js:123
 msgid "Show OSK in landscape (flipped) orientation"
 msgstr "Показывать клавиатуру в ландшафтной (перевёрнутой) ориентации"
 
-#: screen-rotate@shyzus.github.io/prefs.js:113
+#: screen-rotate@shyzus.github.io/prefs.js:128
 msgid "Show OSK in portrait (left) orientation"
 msgstr "Показывать клавиатуру в портретной (влево) ориентации"
 
-#: screen-rotate@shyzus.github.io/prefs.js:118
+#: screen-rotate@shyzus.github.io/prefs.js:133
 msgid "Enable debug logging"
 msgstr "Включить журнал отладки"
 
-#: screen-rotate@shyzus.github.io/prefs.js:119
+#: screen-rotate@shyzus.github.io/prefs.js:134
 msgid "Use \"journalctl /usr/bin/gnome-shell -f\" to see log output."
 msgstr "Используйте «journalctl /usr/bin/gnome-shell -f» для просмотра журнала."
 
-#: screen-rotate@shyzus.github.io/prefs.js:192
-#: screen-rotate@shyzus.github.io/prefs.js:236
+#: screen-rotate@shyzus.github.io/prefs.js:215
+#: screen-rotate@shyzus.github.io/prefs.js:259
 msgid "Portrait (Left)"
 msgstr "Портретная (влево)"
 
-#: screen-rotate@shyzus.github.io/prefs.js:200
-#: screen-rotate@shyzus.github.io/prefs.js:244
+#: screen-rotate@shyzus.github.io/prefs.js:223
+#: screen-rotate@shyzus.github.io/prefs.js:267
 msgid "Portrait (Right)"
 msgstr "Портретная (вправо)"
 
-#: screen-rotate@shyzus.github.io/prefs.js:267
+#: screen-rotate@shyzus.github.io/prefs.js:290
 msgid "Keyboard"
 msgstr "Клавиатура"
 
-#: screen-rotate@shyzus.github.io/prefs.js:270
+#: screen-rotate@shyzus.github.io/prefs.js:293
 msgid "Touchpad"
 msgstr "Тачпад"
+
+#: screen-rotate@shyzus.github.io/rotationSuggestion.js:109
+msgid "Rotate screen"
+msgstr "Повернуть экран"
