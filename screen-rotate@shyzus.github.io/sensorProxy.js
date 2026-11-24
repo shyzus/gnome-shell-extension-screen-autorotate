@@ -67,9 +67,9 @@ export class SensorProxy {
   get_accelerometer_orientation() {
     if (this._enabled) {
       let variant = this._proxy.get_cached_property('AccelerometerOrientation');
-      let orientation = variant.unpack();
-      variant.unref();
-      return orientation;
+      // GJS owns this reference and drops it on its own. An explicit unref()
+      // here released the proxy's cached value a second time.
+      return variant.unpack();
     }
 
     return undefined;
